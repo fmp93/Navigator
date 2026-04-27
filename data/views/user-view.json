@@ -1,0 +1,32 @@
+{
+  "user": "Valentina",
+  "role": "HR",
+  "tasks": [
+    {
+      "title": "Validate onboarding documents",
+      "process": "Employee Onboarding",
+      "status": "Pending",
+      "priority": "High",
+      "due": "Today 5PM"
+    },
+    {
+      "title": "Schedule welcome call",
+      "process": "Employee Onboarding",
+      "status": "In Progress",
+      "priority": "Medium",
+      "due": "Tomorrow"
+    }
+  ],
+  "approvals": [
+    {
+      "title": "Approve new hire",
+      "status": "Pending"
+    }
+  ],
+  "overdue": [
+    {
+      "title": "Upload signed contract",
+      "due": "Yesterday"
+    }
+  ]
+}

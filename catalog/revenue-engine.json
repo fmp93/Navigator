@@ -1,0 +1,12 @@
+{
+  "name": "Revenue Engine",
+  "stages": [
+    "Lead",
+    "Qualified",
+    "Proposal",
+    "Contract",
+    "Delivery",
+    "Invoice",
+    "Payment"
+  ]
+}

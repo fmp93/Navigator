@@ -1,0 +1,42 @@
+{
+  "process": "Laptop Lifecycle",
+  "stage": "Delivery",
+  "states": [
+    {
+      "name": "Prepare for Shipment",
+      "roles": {
+        "IT": [
+          {
+            "task": "Validate asset assignment in ITSM",
+            "what_to_do": [
+              "Open ITSM",
+              "Search asset ID",
+              "Confirm assigned employee",
+              "Update status to In Transit"
+            ],
+            "where": ["ITSM", "Asset Register"],
+            "who_to_notify": ["Operations"],
+            "message": "Asset validated and ready for shipment",
+            "evidence": ["Screenshot", "ITSM updated"],
+            "next_step": "Operations prepares shipment"
+          }
+        ],
+        "Operations": [
+          {
+            "task": "Confirm employee shipping address",
+            "what_to_do": [
+              "Open HR system",
+              "Check employee address",
+              "Confirm via Slack"
+            ],
+            "where": ["HR System", "Slack"],
+            "who_to_notify": ["Procurement"],
+            "message": "Address confirmed for shipment",
+            "evidence": ["Slack confirmation"],
+            "next_step": "Procurement generates shipping label"
+          }
+        ]
+      }
+    }
+  ]
+}
