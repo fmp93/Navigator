@@ -1,98 +1,1554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Navigator OS — Tier 2</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DFX5 OS Navigator — Tier 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-body { font-family: Arial; margin:0; display:flex }
-#sidebar { width:220px; background:#111; color:white; padding:20px }
-#sidebar div { margin:10px 0; cursor:pointer }
-#main { flex:1; padding:30px }
-.view { display:none }
-.active { display:block }
-.card { background:#f4f4f4; padding:15px; margin-bottom:10px; border-radius:8px }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --v:#6C3FE8;--vl:#8B5CF6;--vd:#4C2EC8;--vp:#F0EBFF;--vd2:rgba(108,63,232,0.1);
+  --g:#22C55E;--gp:#DCFCE7;--gd:#16A34A;
+  --a:#F59E0B;--ap:#FEF3C7;
+  --r:#EF4444;--rp:#FEE2E2;
+  --b:#3B82F6;--bp:#DBEAFE;
+  --navy:#0B0E17;--navy2:#13172A;--navy3:#1A1F35;--navy4:#222840;
+  --st:rgba(255,255,255,0.5);--sta:rgba(255,255,255,0.85);--stm:rgba(255,255,255,0.25);
+  --bg:#F1F3F8;--card:#FFFFFF;--border:#E2E6EF;--border2:#D0D5E8;
+  --tp:#0F1117;--ts:#5A6480;--tm:#94A3B8;
+  --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+  --r8:8px;--r12:12px;--r16:16px;
+  --sh0:0 1px 2px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.06);
+  --sh1:0 2px 8px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.08);
+  --sh2:0 8px 32px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06);
+}
+body{font-family:var(--fb);background:var(--bg);color:var(--tp);display:flex;height:100vh;overflow:hidden}
+
+/* ══════ SIDEBAR ══════ */
+#sb{width:240px;min-width:240px;background:var(--navy);display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid rgba(255,255,255,0.05);flex-shrink:0}
+.sb-logo{padding:20px 18px 22px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.sb-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--v),var(--vl));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.sb-logo-text{font-family:var(--fh);font-size:14px;font-weight:800;color:#fff;line-height:1}
+.sb-logo-sub{font-size:10px;color:var(--stm);margin-top:2px;letter-spacing:0.04em}
+.sb-sect{padding:16px 10px 6px}
+.sb-lbl{font-size:9.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.22);padding:0 8px;margin-bottom:6px}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;color:var(--st);font-size:13px;font-weight:500;transition:all 0.16s;user-select:none;position:relative}
+.ni:hover{background:rgba(255,255,255,0.06);color:var(--sta)}
+.ni.act{background:rgba(108,63,232,0.18);color:#fff}
+.ni.act::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--vl);border-radius:0 3px 3px 0}
+.ni-ico{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.ni-badge{margin-left:auto;background:var(--r);color:#fff;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:10px}
+.ni-badge.v{background:var(--v)}
+.ni-caret{margin-left:auto;font-size:10px;color:var(--stm);transition:transform 0.2s}
+.ni.open .ni-caret{transform:rotate(90deg)}
+.sb-children{display:none;padding-left:12px}
+.sb-children.open{display:block}
+.sb-child{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;cursor:pointer;color:rgba(255,255,255,0.4);font-size:12.5px;transition:all 0.15s;border-left:2px solid rgba(255,255,255,0.06);margin-left:8px}
+.sb-child:hover{color:#fff;border-left-color:var(--v)}
+.sb-child.act{color:var(--vl);border-left-color:var(--vl)}
+.sb-div{height:1px;background:rgba(255,255,255,0.06);margin:10px 18px}
+.sb-footer{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px}
+.sb-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--v),#A855F7);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-un{font-size:12.5px;font-weight:600;color:#fff}
+.sb-ur{font-size:11px;color:var(--stm)}
+
+/* ══════ MAIN ══════ */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* TOP BAR */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:56px;flex-shrink:0;position:relative;z-index:50}
+.topbar-bc{display:flex;align-items:center;gap:6px;font-size:13px;min-width:0}
+.topbar-bc span{color:var(--tm);cursor:pointer;white-space:nowrap;font-weight:500;transition:color 0.15s}
+.topbar-bc span:hover{color:var(--v)}
+.topbar-bc span.cur{color:var(--v);font-weight:700}
+.topbar-bc .sep{color:var(--border2);font-size:12px}
+.mode-pill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.05em;flex-shrink:0}
+.mode-pill.global{background:#FFF7ED;color:#B45309;border:1.5px solid #FED7AA}
+.mode-pill.personal{background:var(--vp);color:var(--v);border:1.5px solid rgba(108,63,232,0.25)}
+.topbar-gap{flex:1}
+.search-wrap{position:relative}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:7px 14px;font-size:13px;color:var(--ts);cursor:text;width:240px;transition:all 0.2s;font-family:var(--fb)}
+.search-box:focus-within{border-color:var(--v);background:#fff;box-shadow:0 0 0 3px var(--vd2)}
+.search-box input{border:none;background:transparent;outline:none;font-size:13px;color:var(--tp);font-family:var(--fb);width:100%}
+.search-box input::placeholder{color:var(--tm)}
+.search-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border-radius:var(--r12);border:1.5px solid var(--border);box-shadow:var(--sh2);z-index:200;display:none;overflow:hidden}
+.search-dropdown.open{display:block}
+.sd-section{padding:8px 0}
+.sd-lbl{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--tm);padding:6px 14px}
+.sd-item{padding:8px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background 0.12s}
+.sd-item:hover{background:var(--bg)}
+.sd-item .sd-icon{font-size:14px;color:var(--tm);width:18px;text-align:center}
+.sd-item .sd-text{font-weight:500}
+.sd-item .sd-sub{font-size:11px;color:var(--tm)}
+.role-sel{position:relative}
+.role-btn{display:flex;align-items:center;gap:7px;background:var(--vp);border:1.5px solid rgba(108,63,232,0.2);color:var(--v);border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all 0.15s;white-space:nowrap}
+.role-btn:hover{background:var(--v);color:#fff;border-color:var(--v)}
+.role-dd{position:absolute;top:calc(100%+6px);right:0;background:#fff;border:1.5px solid var(--border);border-radius:var(--r12);box-shadow:var(--sh2);z-index:200;display:none;min-width:160px;overflow:hidden}
+.role-dd.open{display:block}
+.role-opt{padding:9px 16px;font-size:13px;cursor:pointer;font-weight:500;transition:background 0.12s;display:flex;align-items:center;gap:8px}
+.role-opt:hover{background:var(--bg);color:var(--v)}
+.role-opt.sel{color:var(--v);font-weight:700;background:var(--vp)}
+.topbar-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--ts);transition:all 0.15s;position:relative}
+.topbar-icon:hover{background:var(--bg);color:var(--tp)}
+.notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--r);border-radius:50%;border:2px solid #fff}
+
+/* ══════ CONTENT ══════ */
+#content{flex:1;overflow:hidden;display:flex;position:relative}
+
+/* ══════ VIEW SYSTEM ══════ */
+.view{position:absolute;inset:0;display:none;overflow-y:auto}
+.view.active{display:block}
+.view.flex{display:none}
+.view.flex.active{display:flex}
+
+/* ══════ MY WORK VIEW ══════ */
+#v-mywork{padding:28px;display:none}
+#v-mywork.active{display:block}
+.vh{margin-bottom:22px}
+.vh h1{font-family:var(--fh);font-size:26px;font-weight:800}
+.vh p{color:var(--ts);font-size:14px;margin-top:3px}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:24px}
+.tab{padding:10px 20px;font-size:13.5px;font-weight:500;color:var(--ts);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.15s;display:flex;align-items:center;gap:7px}
+.tab:hover{color:var(--v)}
+.tab.act{color:var(--v);border-bottom-color:var(--v);font-weight:700}
+.tab .tc{background:var(--r);color:#fff;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:10px}
+.tab.act .tc{background:var(--v)}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+.kpi{background:var(--card);border-radius:var(--r12);padding:16px 18px;border:1px solid var(--border);box-shadow:var(--sh0);display:flex;align-items:center;gap:13px}
+.kpi-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.kpi-n{font-family:var(--fh);font-size:26px;font-weight:800;line-height:1}
+.kpi-l{font-size:12px;color:var(--ts);margin-top:2px;font-weight:500}
+.kpi-s{font-size:10.5px;color:var(--tm);margin-top:1px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
+.sec-head h2{font-family:var(--fh);font-size:17px;font-weight:800}
+.sec-head p{font-size:12px;color:var(--tm);margin-top:2px}
+.sec-actions{display:flex;gap:8px;align-items:center}
+.fpill{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:12px;color:var(--ts);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:var(--fb)}
+.fpill:hover{border-color:var(--v);color:var(--v)}
+.plist{display:flex;flex-direction:column;gap:11px}
+.prow{background:var(--card);border-radius:var(--r12);border:1.5px solid var(--border);padding:16px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;box-shadow:var(--sh0)}
+.prow:hover{border-color:var(--vl);box-shadow:var(--sh1);transform:translateY(-1px)}
+.prow.hl{border-color:var(--v);background:linear-gradient(135deg,#FEFCFF,#F8F4FF)}
+.p-ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.p-info{flex:0 0 155px}
+.p-name{font-weight:700;font-size:14px;font-family:var(--fh)}
+.p-sub{font-size:12px;font-weight:600;margin-top:2px}
+.p-sub.v{color:var(--v)}
+.p-sub.m{color:var(--tm);font-weight:400}
+.flow-mini{display:flex;align-items:center;flex:1}
+.fd{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--tm);background:#fff;flex-shrink:0;transition:all 0.2s}
+.fd.d{background:var(--g);border-color:var(--g);color:#fff}
+.fd.a{background:var(--v);border-color:var(--v);color:#fff;box-shadow:0 0 0 3px rgba(108,63,232,0.18)}
+.fd.e{background:var(--r);border-color:var(--r);color:#fff}
+.fd.w{background:var(--a);border-color:var(--a);color:#fff}
+.fl{flex:1;height:2px;background:var(--border);min-width:8px}
+.fl.d{background:var(--g)}
+.fl.a{background:linear-gradient(to right,var(--g),var(--v))}
+.flow-wrap{flex:1;display:flex;flex-direction:column}
+.flow-mini{margin-bottom:3px}
+.fstep{font-size:10px;color:var(--tm)}
+.p-tc{flex:0 0 60px;text-align:center}
+.p-tc .cn{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--v)}
+.p-tc .cl{font-size:10.5px;color:var(--tm)}
+.p-next{flex:0 0 190px}
+.pnl{font-size:10px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}
+.pnt{font-size:13px;font-weight:600}
+.pnd{font-size:11px;color:var(--tm);margin-top:2px}
+.pnd.ov{color:var(--r);font-weight:700}
+.pnd.td{color:var(--r)}
+.p-arr{color:var(--tm);font-size:18px;flex-shrink:0;transition:all 0.18s}
+.prow:hover .p-arr{color:var(--v);transform:translateX(3px)}
+.show-more{text-align:center;padding:12px;font-size:13px;color:var(--ts);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.show-more:hover{color:var(--v)}
+
+/* ══════ MY WORK DETAIL VIEW ══════ */
+#v-detail{display:none;flex-direction:row;overflow:hidden}
+#v-detail.active{display:flex}
+#detail-main{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:20px}
+#detail-panel{width:340px;min-width:340px;background:#fff;border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+
+/* FLOW BIG */
+.flow-big{background:var(--card);border-radius:var(--r12);border:1px solid var(--border);box-shadow:var(--sh0);padding:22px 24px}
+.flow-big-lbl{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--tm);margin-bottom:16px}
+.flow-big-track{display:flex;align-items:flex-start}
+.fs{display:flex;flex-direction:column;align-items:center;flex:1}
+.fsd{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--tm);transition:all 0.3s;position:relative;z-index:1;cursor:pointer}
+.fsd:hover{border-color:var(--v);color:var(--v)}
+.fsd.d{background:var(--g);border-color:var(--g);color:#fff}
+.fsd.a{background:var(--v);border-color:var(--v);color:#fff;box-shadow:0 0 0 5px rgba(108,63,232,0.15)}
+.fsn{font-size:10px;font-weight:600;color:var(--ts);text-align:center;margin-top:7px;max-width:80px;line-height:1.3}
+.fsn.a{color:var(--v);font-weight:800}
+.fsn.d{color:var(--g)}
+.fc{flex:1;height:2px;background:var(--border);margin-top:16px}
+.fc.d{background:var(--g)}
+.fc.a{background:linear-gradient(to right,var(--g),var(--v))}
+
+/* CHECKLIST */
+.cl-panel{background:var(--card);border-radius:var(--r12);border:1px solid var(--border);box-shadow:var(--sh0);overflow:hidden}
+.cl-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cl-head-left h2{font-family:var(--fh);font-size:17px;font-weight:800}
+.cl-head-left p{font-size:12px;color:var(--ts);margin-top:3px}
+.prog-wrap{display:flex;align-items:center;gap:10px}
+.prog-bar{width:110px;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--v);border-radius:3px;transition:width 0.4s ease}
+.prog-txt{font-size:12px;font-weight:700;color:var(--v);white-space:nowrap}
+.tl{padding:6px 0}
+.ti{display:flex;align-items:center;gap:12px;padding:12px 22px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.14s;position:relative}
+.ti:last-child{border-bottom:none}
+.ti:hover{background:var(--bg)}
+.ti.sel{background:var(--vp);border-left:3px solid var(--v);padding-left:19px}
+.ti.done{opacity:0.55}
+.ti.done .ti-lbl{text-decoration:line-through;color:var(--tm)}
+.chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;background:#fff;transition:all 0.18s;font-size:11px}
+.chk:hover:not(.done){border-color:var(--v);background:var(--vp)}
+.chk.done{background:var(--g);border-color:var(--g);color:#fff}
+.ti-lbl{font-size:13.5px;font-weight:500;flex:1}
+.ti-meta{display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap}
+.sys-tag{background:var(--bg);border:1px solid var(--border);border-radius:4px;font-size:10.5px;color:var(--ts);padding:1px 7px;font-weight:500}
+.due-tag{font-size:10.5px;color:var(--tm)}
+.due-tag.ov{color:var(--r);font-weight:700}
+.ti-info{flex:1}
+.ti-arr{color:var(--tm);font-size:14px;transition:all 0.15s}
+.ti:hover .ti-arr{color:var(--v);transform:translateX(2px)}
+.ti.sel .ti-arr{color:var(--v)}
+.waiting-box{background:var(--bg);border-radius:var(--r8);border:1px solid var(--border);padding:14px 16px;margin:12px 22px;font-size:13px;color:var(--ts)}
+.waiting-box strong{color:var(--tp)}
+
+/* ACTION GUIDE PANEL */
+.ag-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;color:var(--tm)}
+.ag-empty .e-ico{font-size:36px;margin-bottom:12px;opacity:0.4}
+.ag-empty h4{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--ts)}
+.ag-empty p{font-size:12px;margin-top:6px;line-height:1.6;color:var(--tm)}
+.ag-head{padding:18px 20px;background:linear-gradient(135deg,var(--v),#9B5CF6);color:#fff;flex-shrink:0}
+.ag-head .ag-label{font-size:9.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;opacity:0.7;margin-bottom:5px}
+.ag-head h3{font-family:var(--fh);font-size:16px;font-weight:800;line-height:1.25}
+.ag-close{float:right;cursor:pointer;opacity:0.65;font-size:17px;margin-left:10px;transition:opacity 0.15s}
+.ag-close:hover{opacity:1}
+.ag-body{flex:1;overflow-y:auto;padding-bottom:20px}
+.ag-sect{padding:14px 20px 0}
+.ag-sec-title{font-size:9.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--tm);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ag-sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.step-list{display:flex;flex-direction:column;gap:8px}
+.step{display:flex;gap:9px;align-items:flex-start}
+.sn{width:20px;height:20px;border-radius:50%;background:var(--vd2);color:var(--v);font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.st2{font-size:12.5px;color:var(--tp);line-height:1.4;padding-top:1px}
+.sys-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sc{background:var(--vd2);color:var(--v);border-radius:7px;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.14s;display:flex;align-items:center;gap:5px}
+.sc:hover{background:var(--v);color:#fff}
+.nt-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border)}
+.nt-row:last-child{border-bottom:none}
+.nt-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.nt-name{font-size:12.5px;font-weight:700}
+.nt-role{font-size:10.5px;color:var(--tm)}
+.nt-btn{margin-left:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--ts);cursor:pointer;font-family:var(--fb);transition:all 0.14s}
+.nt-btn:hover{background:var(--vd2);color:var(--v);border-color:var(--vl)}
+.msg-box{background:var(--bg);border-radius:8px;border:1px solid var(--border);padding:11px 13px;font-size:12.5px;color:var(--ts);line-height:1.5;font-style:italic}
+.ev-list{display:flex;flex-direction:column;gap:6px}
+.ev{display:flex;align-items:center;gap:9px;background:var(--bg);border-radius:7px;border:1px solid var(--border);padding:8px 11px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.14s}
+.ev:hover{background:var(--vd2);border-color:var(--vl);color:var(--v)}
+.ev-ico{font-size:14px}
+.next-box{background:linear-gradient(135deg,var(--vp),#F5F0FF);border-radius:9px;border:1.5px solid rgba(108,63,232,0.18);padding:12px 14px}
+.next-arr{font-size:11px;color:var(--v);font-weight:800;margin-bottom:4px}
+.next-txt{font-size:12.5px;color:var(--tp);line-height:1.5}
+.complete-btn{margin:14px 20px 0;background:var(--v);color:#fff;border:none;border-radius:9px;padding:12px;font-size:13.5px;font-weight:700;font-family:var(--fb);cursor:pointer;width:calc(100% - 40px);transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.complete-btn:hover{background:var(--vl);transform:translateY(-1px);box-shadow:0 4px 16px rgba(108,63,232,0.3)}
+.complete-btn:disabled{background:var(--g);opacity:0.8;cursor:default;transform:none}
+.state-done-banner{background:linear-gradient(135deg,var(--g),#16A34A);color:#fff;border-radius:var(--r12);padding:18px 22px;display:flex;align-items:center;gap:13px;animation:fadeUp 0.35s ease}
+.sdb-icon{font-size:26px}
+.sdb-text h3{font-family:var(--fh);font-size:15px;font-weight:800}
+.sdb-text p{font-size:12px;opacity:0.85;margin-top:2px}
+.sdb-btn{margin-left:auto;background:rgba(255,255,255,0.22);color:#fff;border:1.5px solid rgba(255,255,255,0.4);border-radius:7px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb);white-space:nowrap;transition:all 0.15s}
+.sdb-btn:hover{background:rgba(255,255,255,0.38)}
+
+/* ══════ GLOBAL NAVIGATOR VIEW ══════ */
+#v-nav{display:none;flex-direction:column;overflow:hidden}
+#v-nav.active{display:flex}
+#nav-top{padding:24px 28px 20px;background:var(--bg);flex-shrink:0;border-bottom:1px solid var(--border)}
+.nav-proc-title{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.nav-proc-ico{width:46px;height:46px;border-radius:12px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:22px}
+.nav-proc-name{font-family:var(--fh);font-size:22px;font-weight:800}
+.nav-proc-sub{font-size:13px;color:var(--ts);margin-top:2px}
+.nav-proc-actions{display:flex;align-items:center;gap:10px;margin-left:auto}
+.add-btn{background:var(--v);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer;display:flex;align-items:center;gap:7px;transition:all 0.18s}
+.add-btn:hover{background:var(--vl);transform:translateY(-1px);box-shadow:0 4px 14px rgba(108,63,232,0.3)}
+.view-my-btn{background:var(--card);color:var(--v);border:1.5px solid var(--border);border-radius:9px;padding:9px 18px;font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer;transition:all 0.15s}
+.view-my-btn:hover{border-color:var(--v);background:var(--vp)}
+
+/* GLOBAL FLOW */
+.nav-flow{background:#fff;border-radius:var(--r12);border:1px solid var(--border);box-shadow:var(--sh0);padding:20px 24px}
+.nav-flow-lbl{font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--tm);margin-bottom:14px}
+
+/* DEPT GRID */
+#nav-body{flex:1;display:flex;overflow:hidden}
+#dept-grid-wrap{flex:1;overflow:auto;padding:20px 28px}
+.dept-grid-title{font-family:var(--fh);font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.dept-grid-title .state-badge{background:var(--vp);color:var(--v);border-radius:5px;padding:3px 10px;font-size:12px}
+.dept-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;min-width:900px}
+.dept-col{background:var(--card);border-radius:var(--r12);border:1.5px solid var(--border);overflow:hidden;box-shadow:var(--sh0);cursor:pointer;transition:all 0.18s}
+.dept-col:hover{border-color:var(--vl);box-shadow:var(--sh1)}
+.dept-col.sel{border-color:var(--v);box-shadow:0 0 0 3px rgba(108,63,232,0.12)}
+.dept-col-head{padding:13px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.dept-col-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.dept-col-name{font-family:var(--fh);font-size:13px;font-weight:800}
+.dept-col-count{margin-left:auto;background:var(--bg);border-radius:10px;padding:2px 8px;font-size:10.5px;font-weight:700;color:var(--ts)}
+.dept-tasks{padding:8px 0}
+.dt{padding:9px 14px;border-bottom:1px solid var(--border);transition:background 0.12s;cursor:pointer}
+.dt:last-child{border-bottom:none}
+.dt:hover{background:var(--bg)}
+.dt.sel{background:var(--vp)}
+.dt-top{display:flex;align-items:flex-start;gap:7px}
+.dt-num{width:18px;height:18px;border-radius:50%;background:var(--bg);border:1px solid var(--border);font-size:9.5px;font-weight:700;color:var(--ts);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.dt-lbl{font-size:12px;font-weight:600;line-height:1.3;flex:1}
+.dt-sys{font-size:10.5px;color:var(--tm);margin-top:4px;margin-left:25px}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.status-dot.p{background:var(--a)}
+.status-dot.c{background:var(--g)}
+.status-dot.b{background:var(--r)}
+.status-dot.cond{background:var(--b)}
+
+/* DEPT RIGHT PANEL */
+#dept-panel{width:320px;min-width:320px;background:#fff;border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.dp-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;color:var(--tm)}
+.dp-empty .e-ico{font-size:34px;margin-bottom:10px;opacity:0.4}
+.dp-empty h4{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--ts)}
+.dp-empty p{font-size:12px;margin-top:6px;line-height:1.5}
+.dp-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.dp-head-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.dp-head-name{font-family:var(--fh);font-size:15px;font-weight:800}
+.dp-head-sub{font-size:11px;color:var(--tm)}
+.dp-body{flex:1;overflow-y:auto;padding:0 0 20px}
+.dp-sect{padding:14px 18px 0}
+.dp-sec-title{font-size:9.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--tm);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.dp-sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.dp-task{padding:9px 11px;background:var(--bg);border-radius:8px;border:1px solid var(--border);margin-bottom:7px;cursor:pointer;transition:all 0.13s}
+.dp-task:hover{background:var(--vd2);border-color:var(--vl)}
+.dp-task.sel{background:var(--vd2);border-color:var(--v)}
+.dp-task-lbl{font-size:12.5px;font-weight:600}
+.dp-task-sys{font-size:10.5px;color:var(--tm);margin-top:3px}
+.dp-sys-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.dp-sys{background:var(--vd2);color:var(--v);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600}
+.dp-next-box{background:var(--gp);border-radius:8px;border:1.5px solid rgba(34,197,94,0.25);padding:11px 13px}
+.dp-next-arr{font-size:11px;color:var(--gd);font-weight:800;margin-bottom:4px}
+.dp-next-txt{font-size:12px;color:var(--tp);line-height:1.5}
+.policy-item{font-size:12px;color:var(--ts);display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border)}
+.policy-item:last-child{border-bottom:none}
+.policy-item::before{content:'📄';font-size:12px}
+
+/* ══════ TOAST ══════ */
+#toast-wrap{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:var(--navy2);color:#fff;border-radius:9px;padding:11px 20px;font-size:13px;font-weight:600;box-shadow:var(--sh2);display:flex;align-items:center;gap:9px;white-space:nowrap;animation:toastIn 0.3s ease,toastOut 0.3s ease 2.7s forwards;pointer-events:none;border:1px solid rgba(255,255,255,0.1)}
+.toast.success{background:var(--gd)}
+.toast.warn{background:var(--a)}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(108,63,232,0.3)}50%{box-shadow:0 0 0 8px rgba(108,63,232,0)}}
+.fsd.a{animation:pulse-glow 2.5s infinite}
+
+/* ══════ SCROLLBAR ══════ */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#CBD5E1}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
 
-<div id="sidebar">
-  <h3>Navigator</h3>
-  <div onclick="openCEO()">👑 CEO View</div>
-  <div onclick="openArea()">🏢 Area View</div>
-  <div onclick="openUser()">👤 User View</div>
-</div>
+<!-- ════ SIDEBAR ════ -->
+<nav id="sb">
+  <div class="sb-logo">
+    <div class="sb-logo-mark">⬡</div>
+    <div>
+      <div class="sb-logo-text">DFX5 OS</div>
+      <div class="sb-logo-sub">Navigator · Tier 1</div>
+    </div>
+  </div>
 
+  <div class="sb-sect">
+    <div class="sb-lbl">Menu</div>
+    <div class="ni act" onclick="navTo('mywork',this)"><span class="ni-ico">🏠</span>Home</div>
+    <div class="ni" onclick="navTo('mywork',this)"><span class="ni-ico">✅</span>My Work<span class="ni-badge">5</span></div>
+    <div class="ni" onclick="navTo('mywork',this)"><span class="ni-ico">⚙️</span>My Processes<span class="ni-badge v">5</span></div>
+    <div class="ni" onclick="navTo('nav',this)"><span class="ni-ico">🌐</span>Browse All</div>
+  </div>
+
+  <div class="sb-div"></div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">Domains</div>
+
+    <!-- Operations -->
+    <div class="ni" id="ni-ops" onclick="toggleDomain('ops',this)">
+      <span class="ni-ico">⚙️</span>Operations<span class="ni-caret">›</span>
+    </div>
+    <div class="sb-children" id="dom-ops">
+      <div class="sb-child" onclick="openGlobalProcess('laptop','ops',this)">💻 Laptop Lifecycle</div>
+      <div class="sb-child" onclick="openGlobalProcess('equipment','ops',this)">📦 Equipment Return</div>
+      <div class="sb-child" onclick="openGlobalProcess('facilities','ops',this)">🏢 Facilities Request</div>
+    </div>
+
+    <!-- HR -->
+    <div class="ni" onclick="toggleDomain('hr',this)">
+      <span class="ni-ico">👤</span>Human Resources<span class="ni-caret">›</span>
+    </div>
+    <div class="sb-children" id="dom-hr">
+      <div class="sb-child" onclick="openGlobalProcess('onboarding','hr',this)">🆕 Employee Onboarding</div>
+      <div class="sb-child" onclick="openGlobalProcess('offboarding','hr',this)">🚪 Employee Offboarding</div>
+    </div>
+
+    <!-- Finance -->
+    <div class="ni" onclick="toggleDomain('fin',this)">
+      <span class="ni-ico">💰</span>Finance<span class="ni-caret">›</span>
+    </div>
+    <div class="sb-children" id="dom-fin">
+      <div class="sb-child">📊 Budget Approval</div>
+      <div class="sb-child">🧾 Invoice Processing</div>
+    </div>
+
+    <!-- IT -->
+    <div class="ni" onclick="toggleDomain('it',this)">
+      <span class="ni-ico">💻</span>IT & Systems<span class="ni-caret">›</span>
+    </div>
+    <div class="sb-children" id="dom-it">
+      <div class="sb-child">🔒 Access Management</div>
+      <div class="sb-child">🛠️ Incident Response</div>
+    </div>
+
+    <!-- Procurement -->
+    <div class="ni" onclick="toggleDomain('proc',this)">
+      <span class="ni-ico">🛒</span>Procurement<span class="ni-caret">›</span>
+    </div>
+    <div class="sb-children" id="dom-proc">
+      <div class="sb-child">📝 Purchase Requests</div>
+      <div class="sb-child">🤝 Vendor Management</div>
+    </div>
+  </div>
+
+  <div class="sb-div"></div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">Quick Links</div>
+    <div class="ni" onclick="setActive(this)"><span class="ni-ico">✔️</span>My Approvals<span class="ni-badge">3</span></div>
+    <div class="ni" onclick="setActive(this)"><span class="ni-ico">🔔</span>My Notifications<span class="ni-badge">7</span></div>
+    <div class="ni" onclick="setActive(this)"><span class="ni-ico">📊</span>Reports</div>
+    <div class="ni" onclick="setActive(this)"><span class="ni-ico">❓</span>Help & Support</div>
+  </div>
+
+  <div class="sb-footer">
+    <div class="sb-av" id="sb-av">JD</div>
+    <div>
+      <div class="sb-un" id="sb-un">Jordan Davis</div>
+      <div class="sb-ur" id="sb-ur">IT Operations</div>
+    </div>
+    <span style="color:var(--stm);cursor:pointer;margin-left:auto">⋯</span>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
 <div id="main">
 
-  <div id="ceo" class="view active">
-    <h1>CEO Dashboard</h1>
-    <div id="ceo-data"></div>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-bc" id="topbar-bc">
+      <span onclick="navTo('mywork')">DFX5</span>
+      <span class="sep">›</span>
+      <span class="cur" id="bc-view">My Work</span>
+    </div>
+    <div class="mode-pill personal" id="mode-pill">My Work View</div>
+    <div class="topbar-gap"></div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-box">
+        <span style="color:var(--tm)">🔍</span>
+        <input type="text" placeholder="Search processes, tasks, systems..." id="search-input" autocomplete="off" oninput="onSearch(this.value)" onfocus="openSearch()" onblur="setTimeout(closeSearch,150)"/>
+      </div>
+      <div class="search-dropdown" id="search-dd">
+        <div class="sd-section">
+          <div class="sd-lbl">Processes</div>
+          <div class="sd-item" onclick="openGlobalProcess('laptop','ops');closeSearch()"><span class="sd-icon">💻</span><div><div class="sd-text">Laptop Lifecycle</div><div class="sd-sub">Operations · 7 states</div></div></div>
+          <div class="sd-item" onclick="openGlobalProcess('equipment','ops');closeSearch()"><span class="sd-icon">📦</span><div><div class="sd-text">Equipment Return</div><div class="sd-sub">Operations · 5 states</div></div></div>
+          <div class="sd-item" onclick="openGlobalProcess('onboarding','hr');closeSearch()"><span class="sd-icon">👤</span><div><div class="sd-text">Employee Onboarding</div><div class="sd-sub">HR · 7 states</div></div></div>
+        </div>
+        <div class="sd-section" style="border-top:1px solid var(--border)">
+          <div class="sd-lbl">Tasks & Systems</div>
+          <div class="sd-item" onclick="openDetailFromSearch('laptop','IT');closeSearch()"><span class="sd-icon">🔧</span><div><div class="sd-text">Validate asset assignment in ITSM</div><div class="sd-sub">IT · Ship to Employee</div></div></div>
+          <div class="sd-item" onclick="closeSearch()"><span class="sd-icon">📦</span><div><div class="sd-text">Generate shipping label in carrier portal</div><div class="sd-sub">Procurement · Ship to Employee</div></div></div>
+          <div class="sd-item" onclick="closeSearch()"><span class="sd-icon">🖥️</span><div><div class="sd-text">ITSM · FedEx Portal · Jira</div><div class="sd-sub">Systems</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLE SELECTOR -->
+    <div class="role-sel">
+      <button class="role-btn" onclick="toggleRoleDD()">
+        <span id="role-ico">💻</span> <span id="role-name">IT</span> ▾
+      </button>
+      <div class="role-dd" id="role-dd">
+        <div class="role-opt" onclick="setRole('Operations','⚙️')"><span>⚙️</span> Operations</div>
+        <div class="role-opt sel" onclick="setRole('IT','💻')"><span>💻</span> IT</div>
+        <div class="role-opt" onclick="setRole('Procurement','🛒')"><span>🛒</span> Procurement</div>
+        <div class="role-opt" onclick="setRole('Finance','💰')"><span>💰</span> Finance</div>
+        <div class="role-opt" onclick="setRole('HR','👤')"><span>👤</span> HR</div>
+      </div>
+    </div>
+
+    <div class="topbar-icon" onclick="showToast('3 new notifications','🔔')">🔔<div class="notif-dot"></div></div>
+    <div class="topbar-icon" onclick="toggleRoleDD()">
+      <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--v),#A855F7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800">JD</div>
+    </div>
   </div>
 
-  <div id="area" class="view">
-    <h1>Area Dashboard (HR)</h1>
-    <div id="area-data"></div>
-  </div>
+  <!-- CONTENT AREA -->
+  <div id="content">
 
-  <div id="user" class="view">
-    <h1>User Dashboard</h1>
-    <div id="user-data"></div>
-  </div>
+    <!-- ═══ MY WORK VIEW ═══ -->
+    <div id="v-mywork" class="view active" style="overflow-y:auto">
+      <div style="padding:28px">
+        <div class="vh">
+          <h1>My Work</h1>
+          <p>All your tasks across processes — <span id="mw-role-label">IT Operations</span></p>
+        </div>
 
-</div>
+        <div class="tabs">
+          <div class="tab act" onclick="setTab(this)">Overview</div>
+          <div class="tab" onclick="setTab(this)">All Tasks</div>
+          <div class="tab" onclick="setTab(this)">Needs Attention <span class="tc">3</span></div>
+          <div class="tab" onclick="setTab(this)">Completed</div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-ico" style="background:#EDE9FE">📋</div><div><div class="kpi-n">12</div><div class="kpi-l">Total Tasks</div><div class="kpi-s">Across all processes</div></div></div>
+          <div class="kpi"><div class="kpi-ico" style="background:var(--gp)">✅</div><div><div class="kpi-n">5</div><div class="kpi-l">Completed</div><div class="kpi-s">This week</div></div></div>
+          <div class="kpi"><div class="kpi-ico" style="background:var(--bp)">⏱</div><div><div class="kpi-n">4</div><div class="kpi-l">In Progress</div><div class="kpi-s">Due this week</div></div></div>
+          <div class="kpi"><div class="kpi-ico" style="background:var(--ap)">⚠️</div><div><div class="kpi-n" id="kpi-ov">3</div><div class="kpi-l">Overdue</div><div class="kpi-s">Needs attention</div></div></div>
+        </div>
+
+        <div class="sec-head">
+          <div><h2>My Processes</h2><p>Filtered by your role</p></div>
+          <div class="sec-actions">
+            <div class="fpill">All Status ▾</div>
+            <div class="fpill">Sort: Due Date ▾</div>
+          </div>
+        </div>
+
+        <div class="plist" id="my-proc-list"></div>
+        <div class="show-more">Show completed processes (8) ▾</div>
+      </div>
+    </div>
+
+    <!-- ═══ PROCESS DETAIL (MY WORK) ═══ -->
+    <div id="v-detail" class="view flex">
+      <div id="detail-main">
+        <div class="state-done-banner hidden" id="done-banner">
+          <div class="sdb-icon">🎉</div>
+          <div class="sdb-text">
+            <h3 id="done-title">Stage Complete!</h3>
+            <p id="done-sub">All tasks done. Advancing...</p>
+          </div>
+          <button class="sdb-btn" onclick="advanceState()">→ Next Stage</button>
+        </div>
+        <div class="flow-big" id="detail-flow"></div>
+        <div class="cl-panel">
+          <div class="cl-head">
+            <div class="cl-head-left">
+              <h2 id="cl-state-name">Ship to Employee</h2>
+              <p id="cl-desc">Complete your assigned tasks for this stage</p>
+            </div>
+            <div class="prog-wrap">
+              <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+              <div class="prog-txt" id="prog-txt">0 / 0</div>
+            </div>
+          </div>
+          <div class="tl" id="task-list"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button class="view-my-btn" onclick="navTo('nav')" style="font-size:12.5px;padding:8px 16px">🌐 View Full Company Process</button>
+          <button class="view-my-btn" onclick="navTo('mywork')" style="font-size:12.5px;padding:8px 16px">← Back to My Work</button>
+        </div>
+      </div>
+
+      <!-- ACTION GUIDE PANEL -->
+      <div id="detail-panel">
+        <div class="ag-empty" id="ag-empty">
+          <div class="e-ico">👆</div>
+          <h4>Click a task for your Action Guide</h4>
+          <p>Step-by-step instructions, systems, notifications, evidence required, and next steps.</p>
+        </div>
+        <div id="ag-content" class="hidden" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+          <div class="ag-head">
+            <span class="ag-close" onclick="closeAG()">✕</span>
+            <div class="ag-label">Action Guide</div>
+            <h3 id="ag-title">Task Name</h3>
+          </div>
+          <div class="ag-body">
+            <div class="ag-sect">
+              <div class="ag-sec-title">What to do</div>
+              <div class="step-list" id="ag-steps"></div>
+            </div>
+            <div class="ag-sect" style="margin-top:14px">
+              <div class="ag-sec-title">Where to do it</div>
+              <div class="sys-chips" id="ag-systems"></div>
+            </div>
+            <div class="ag-sect" style="margin-top:14px">
+              <div class="ag-sec-title">Who to notify</div>
+              <div id="ag-notify"></div>
+            </div>
+            <div class="ag-sect" style="margin-top:14px">
+              <div class="ag-sec-title">Suggested message</div>
+              <div class="msg-box" id="ag-message"></div>
+            </div>
+            <div class="ag-sect" style="margin-top:14px">
+              <div class="ag-sec-title">Evidence required</div>
+              <div class="ev-list" id="ag-evidence"></div>
+            </div>
+            <div class="ag-sect" style="margin-top:14px">
+              <div class="ag-sec-title">What happens next</div>
+              <div class="next-box">
+                <div class="next-arr">→</div>
+                <div class="next-txt" id="ag-next"></div>
+              </div>
+            </div>
+            <button class="complete-btn" id="ag-complete-btn" onclick="completeCurrentTask()">✓ &nbsp;Mark Task Complete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ GLOBAL PROCESS NAVIGATOR ═══ -->
+    <div id="v-nav" class="view flex">
+      <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+        <!-- NAV TOP -->
+        <div id="nav-top">
+          <div class="nav-proc-title">
+            <div class="nav-proc-ico" id="nav-proc-ico">💻</div>
+            <div>
+              <div class="nav-proc-name" id="nav-proc-name">Laptop Lifecycle</div>
+              <div class="nav-proc-sub" id="nav-proc-sub">Operations · Full company process view</div>
+            </div>
+            <div class="nav-proc-actions">
+              <button class="view-my-btn" onclick="navTo('mywork')">← Back to My Work</button>
+              <button class="add-btn" onclick="addToMyWork()">+ Add This Flow to My Work</button>
+            </div>
+          </div>
+          <!-- GLOBAL FLOW -->
+          <div class="nav-flow">
+            <div class="nav-flow-lbl" id="nav-flow-lbl">Process Flow — Laptop Lifecycle</div>
+            <div class="flow-big-track" id="nav-flow-track"></div>
+          </div>
+        </div>
+
+        <!-- DEPT GRID -->
+        <div id="nav-body">
+          <div id="dept-grid-wrap">
+            <div class="dept-grid-title">
+              Department Ownership — <span class="state-badge" id="dept-state-badge">Ship to Employee</span>
+              <span style="font-size:12px;color:var(--tm);font-weight:400;margin-left:4px">(Click any department or task for details)</span>
+            </div>
+            <div class="dept-grid" id="dept-grid"></div>
+          </div>
+
+          <!-- DEPT RIGHT PANEL -->
+          <div id="dept-panel">
+            <div class="dp-empty" id="dp-empty">
+              <div class="e-ico">👇</div>
+              <h4>Select a department</h4>
+              <p>Click any department column or task to see responsibilities, systems, and next actions.</p>
+            </div>
+            <div id="dp-content" class="hidden" style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+              <div class="dp-head">
+                <div class="dp-head-ico" id="dp-head-ico">⚙️</div>
+                <div>
+                  <div class="dp-head-name" id="dp-head-name">Operations</div>
+                  <div class="dp-head-sub" id="dp-head-sub">Ship to Employee</div>
+                </div>
+                <span style="margin-left:auto;cursor:pointer;color:var(--tm);font-size:16px" onclick="closeDeptPanel()">✕</span>
+              </div>
+              <div class="dp-body">
+                <div class="dp-sect">
+                  <div class="dp-sec-title">Responsibilities</div>
+                  <div id="dp-tasks"></div>
+                </div>
+                <div class="dp-sect" style="margin-top:14px">
+                  <div class="dp-sec-title">Systems Used</div>
+                  <div class="dp-sys-wrap" id="dp-systems"></div>
+                </div>
+                <div class="dp-sect" style="margin-top:14px">
+                  <div class="dp-sec-title">Who They Notify Next</div>
+                  <div id="dp-notify"></div>
+                </div>
+                <div class="dp-sect" style="margin-top:14px">
+                  <div class="dp-sec-title">What happens after</div>
+                  <div class="dp-next-box">
+                    <div class="dp-next-arr">→</div>
+                    <div class="dp-next-txt" id="dp-after"></div>
+                  </div>
+                </div>
+                <div class="dp-sect" style="margin-top:14px">
+                  <div class="dp-sec-title">Related Policies</div>
+                  <div id="dp-policies"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- TOAST -->
+<div id="toast-wrap"></div>
 
 <script>
+/* ══════════════════════════════════════
+   DEMO DATA
+══════════════════════════════════════ */
+const ROLES = {
+  Operations: { ico:'⚙️', color:'#F59E0B', avatarBg:'#B45309' },
+  IT:         { ico:'💻', color:'#6C3FE8', avatarBg:'#4C2EC8' },
+  Procurement:{ ico:'🛒', color:'#3B82F6', avatarBg:'#1D4ED8' },
+  Finance:    { ico:'💰', color:'#22C55E', avatarBg:'#16A34A' },
+  HR:         { ico:'👤', color:'#EF4444', avatarBg:'#B91C1C' }
+};
 
-function switchView(id){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'))
-  document.getElementById(id).classList.add('active')
+const DEPT_META = {
+  Operations:  { ico:'⚙️', bg:'#FEF3C7', color:'#B45309' },
+  Procurement: { ico:'🛒', bg:'#DBEAFE', color:'#1D4ED8' },
+  IT:          { ico:'💻', bg:'#EDE9FE', color:'#4C2EC8' },
+  Finance:     { ico:'💰', bg:'#DCFCE7', color:'#15803D' },
+  HR:          { ico:'👤', bg:'#FEE2E2', color:'#B91C1C' }
+};
+
+const PROCESSES = {
+  laptop: {
+    name:'Laptop Lifecycle', icon:'💻', iconBg:'#EDE9FE',
+    domain:'Operations',
+    currentStateIdx: 3,
+    states:[
+      { name:'Request Approved',         short:'Approved',    status:'done' },
+      { name:'Purchase Completed',        short:'Purchased',   status:'done' },
+      { name:'Prepare for Shipment',      short:'Prepare',     status:'done' },
+      { name:'Ship to Employee',          short:'Ship',        status:'active',
+        desc:'Device is being shipped. Your role tasks are shown below.',
+        deptTasks: {
+          Operations:[
+            { id:'op1', lbl:'Confirm employee shipping address', sys:'Slack / Email', status:'p' },
+            { id:'op2', lbl:'Attach tracking number to Jira request', sys:'Jira', status:'p' },
+            { id:'op3', lbl:'Notify employee with tracking details and ETA', sys:'Outlook / Slack', status:'p' }
+          ],
+          Procurement:[
+            { id:'pr1', lbl:'Generate shipping label in carrier portal', sys:'FedEx / DHL Portal', status:'p' },
+            { id:'pr2', lbl:'Confirm carrier pickup window', sys:'FedEx Portal', status:'p' }
+          ],
+          IT:[
+            { id:'it1', lbl:'Validate asset assignment in ITSM', sys:'ITSM / Asset Register', status:'p' },
+            { id:'it2', lbl:'Confirm device status is In Transit', sys:'ITSM', status:'p' },
+            { id:'it3', lbl:'Attach ITSM confirmation to Jira', sys:'Jira', status:'p' }
+          ],
+          Finance:[
+            { id:'fi1', lbl:'Update asset register to In Transit status', sys:'Finance System', status:'cond' }
+          ],
+          HR:[
+            { id:'hr1', lbl:'Confirm employee availability to receive package', sys:'Email', status:'p' },
+            { id:'hr2', lbl:'Re-verify address if needed', sys:'HRIS', status:'p' },
+            { id:'hr3', lbl:'Notify employee about expected delivery', sys:'Slack', status:'p' },
+            { id:'hr4', lbl:'Update onboarding checklist', sys:'Notion', status:'p' },
+            { id:'hr5', lbl:'Coordinate with manager if delivery is delayed', sys:'Email / Slack', status:'cond' }
+          ]
+        },
+        deptInfo: {
+          Operations: {
+            systems:['Slack','Jira','Outlook'],
+            notify:['IT Team','Employee'],
+            after:'Procurement generates the shipping label. IT validates asset assignment. Employee receives tracking notification.',
+            policies:['Shipping Policy v2.1','Asset Tracking SOP','Communication Guidelines']
+          },
+          Procurement: {
+            systems:['FedEx Portal','DHL Portal','Jira'],
+            notify:['Operations Team','Finance'],
+            after:'Operations attaches tracking number to Jira. Finance updates asset register. Shipment is in transit.',
+            policies:['Carrier Selection Policy','Procurement SOP v3.0','Budget Approval Process']
+          },
+          IT: {
+            systems:['ITSM','Asset Register','Jira'],
+            notify:['Operations Team'],
+            after:'Operations attaches tracking to Jira. Employee receives shipment notification. Process advances to Employee Receives.',
+            policies:['Asset Management Policy','ITSM Workflow Guide','Jira Ticket Standards']
+          },
+          Finance: {
+            systems:['Finance System','ERP','Asset Register'],
+            notify:['IT Team','Procurement'],
+            after:'Asset is marked In Transit in finance system. Register is updated for audit trail. No further action until delivery confirmed.',
+            policies:['Asset Register Policy','Finance Controls v4.2','Audit Trail Requirements']
+          },
+          HR: {
+            systems:['Email','Slack','HRIS','Notion'],
+            notify:['Employee','Hiring Manager'],
+            after:'Employee is ready to receive device. Onboarding checklist updated. Manager notified if delays occur.',
+            policies:['Employee Experience Policy','Onboarding Handbook v5.1','Communication Standards']
+          }
+        }
+      },
+      { name:'Employee Receives',          short:'Received',  status:'next' },
+      { name:'Confirm Delivery',           short:'Confirmed', status:'next' },
+      { name:'In Use / Active',            short:'Active',    status:'next' }
+    ],
+    roleTasks: {
+      Operations: {
+        3:[
+          { id:'op1', lbl:'Confirm employee shipping address', sys:'Slack / Email', due:'Today, 4:00 PM',
+            done:false, guide:{
+              steps:['Open Slack and message the employee directly','Confirm current home delivery address','Cross-check with HRIS employee record','If address mismatch: update in HRIS and flag to HR','Log confirmation in Jira ticket comment'],
+              where:['Slack','Jira','HRIS'],
+              notify:[{name:'IT Team',role:'Asset Management',color:'#6C3FE8'},{name:'Procurement',role:'Logistics',color:'#3B82F6'}],
+              message:'Shipping address confirmed for [Employee Name]. Address verified against HRIS. Ready for label generation.',
+              evidence:['Screenshot of employee Slack confirmation','Jira comment added'],
+              next:'Procurement generates the shipping label. Operations attaches tracking to Jira ticket.'
+            }
+          },
+          { id:'op2', lbl:'Attach tracking number to Jira request', sys:'Jira', due:'Today, 5:00 PM',
+            done:false, guide:{
+              steps:['Open Jira → Locate ticket for this device request','Click "Add Comment"','Paste tracking number from Procurement','Add carrier name (FedEx/DHL) and estimated delivery date','Change ticket status to "In Transit"','Tag the employee and HR in the comment'],
+              where:['Jira'],
+              notify:[{name:'Employee',role:'Device Recipient',color:'#22C55E'},{name:'HR Team',role:'People Ops',color:'#EF4444'}],
+              message:'Tracking number attached to Jira. Carrier: FedEx. Tracking: [NUMBER]. ETA: [DATE].',
+              evidence:['Jira ticket updated with tracking','Status changed to In Transit'],
+              next:'Employee receives notification. IT confirms ITSM record. Process advances toward Employee Receives.'
+            }
+          },
+          { id:'op3', lbl:'Notify employee with tracking details and ETA', sys:'Outlook / Slack', due:'Today, 6:00 PM',
+            done:false, guide:{
+              steps:['Open Outlook or Slack','Draft a message to the employee','Include carrier name, tracking number, ETA, delivery address','Add instructions for signature on delivery','CC Hiring Manager and HR','Send and log in Jira'],
+              where:['Outlook','Slack'],
+              notify:[{name:'Employee',role:'Device Recipient',color:'#22C55E'},{name:'Hiring Manager',role:'Department Head',color:'#F59E0B'}],
+              message:'Hi [Name], your laptop is on its way! Carrier: FedEx. Tracking: [NUM]. ETA: [DATE]. Please be available to sign.',
+              evidence:['Copy of email/Slack message','Jira comment with message confirmation'],
+              next:'Employee prepares to receive device. HR updates onboarding checklist. Process moves to Employee Receives.'
+            }
+          }
+        ]
+      },
+      IT: {
+        3:[
+          { id:'it1', lbl:'Validate asset assignment in ITSM', sys:'ITSM', due:'Today, 6:00 PM',
+            done:false, guide:{
+              steps:['Open ITSM and navigate to Asset Management','Search for asset ID ASSET-2026-0089','Confirm assigned employee is Sarah Kim','Confirm status field shows "In Transit"','Verify serial number matches device record','Save changes and note timestamp'],
+              where:['ITSM','Asset Register'],
+              notify:[{name:'Operations Team',role:'Logistics',color:'#F59E0B'}],
+              message:'Asset assignment confirmed in ITSM. Device ASSET-2026-0089 assigned to Sarah Kim. Status: In Transit.',
+              evidence:['ITSM asset record screenshot','Asset status updated to In Transit'],
+              next:'Operations attaches tracking number to Jira. Employee receives shipment notification. Process moves toward Employee Receives.'
+            }
+          },
+          { id:'it2', lbl:'Confirm device status is In Transit', sys:'ITSM', due:'Today, 6:00 PM',
+            done:false, guide:{
+              steps:['In ITSM, navigate to the device record','Check the Status field — must read "In Transit"','If status is incorrect, update it now','Verify last-updated timestamp is current','Cross-check against Procurement confirmation','Log verification complete in Jira ticket'],
+              where:['ITSM','Jira'],
+              notify:[{name:'Finance',role:'Asset Register',color:'#22C55E'}],
+              message:'Device status confirmed as In Transit in ITSM. Finance can now update asset register.',
+              evidence:['ITSM status screenshot','Jira comment confirming verification'],
+              next:'Finance updates the asset register. Operations finalizes tracking notification to employee.'
+            }
+          },
+          { id:'it3', lbl:'Attach ITSM confirmation to Jira', sys:'Jira', due:'Today, 6:00 PM',
+            done:false, guide:{
+              steps:['Take a screenshot of the ITSM asset record','Open Jira — navigate to the device request ticket','Click "Add Attachment" and upload the ITSM screenshot','Add a comment: "ITSM record verified — asset In Transit"','Tag Operations team in the comment','Change ticket status to "IT Verified"'],
+              where:['Jira','ITSM'],
+              notify:[{name:'Operations Team',role:'Logistics',color:'#F59E0B'}],
+              message:'ITSM confirmation attached to Jira. IT verification complete. Operations can proceed with final employee notification.',
+              evidence:['ITSM screenshot attached to Jira','Jira comment added','Ticket status: IT Verified'],
+              next:'Operations sends final tracking notification to employee. Process advances to Employee Receives state.'
+            }
+          }
+        ],
+        4:[
+          { id:'it4', lbl:'Confirm delivery with employee', sys:'Email / ITSM', due:'Tomorrow, 2:00 PM',
+            done:false, guide:{
+              steps:['Contact employee to confirm device was received','Ask them to power on and verify it boots','Log confirmation in ITSM','Update ticket status to Delivered','Notify HR of successful delivery'],
+              where:['Email','ITSM'],
+              notify:[{name:'HR Team',role:'People Ops',color:'#EF4444'}],
+              message:'Device delivery confirmed with Sarah Kim. Device powered on successfully.',
+              evidence:['Employee confirmation email','ITSM status: Delivered'],
+              next:'IT sets up remote support access. HR completes onboarding checklist. Process advances to Confirm Delivery state.'
+            }
+          }
+        ],
+        5:[
+          { id:'it5', lbl:'Verify MDM enrollment on received device', sys:'MDM / Jamf', due:'In 3 days',
+            done:false, guide:{
+              steps:['Open Jamf Pro and locate the device','Confirm MDM enrollment shows as Active','Verify all policies have been applied','Run a compliance check','Update ITSM to Active status'],
+              where:['Jamf Pro','MDM','ITSM'],
+              notify:[{name:'IT Manager',role:'IT Operations',color:'#6C3FE8'}],
+              message:'MDM enrollment confirmed on received device. All policies active. ITSM status updated to In Use.',
+              evidence:['Jamf Pro enrollment screenshot','Compliance check report'],
+              next:'Device enters active use phase. Process completes at In Use / Active state.'
+            }
+          }
+        ],
+        6:[]
+      },
+      Procurement: {
+        3:[
+          { id:'pr1', lbl:'Generate shipping label in carrier portal', sys:'FedEx / DHL Portal', due:'Today, 3:00 PM',
+            done:false, guide:{
+              steps:['Log into FedEx/DHL carrier portal','Create a new shipment','Enter sender address (company warehouse)','Enter recipient address (confirmed by Operations)','Select overnight / 2-day delivery based on SLA','Generate label and download PDF','Send label to Operations for attachment'],
+              where:['FedEx Portal','DHL Portal','Jira'],
+              notify:[{name:'Operations Team',role:'Logistics',color:'#F59E0B'}],
+              message:'Shipping label generated. Carrier: FedEx. Tracking: [NUM]. Label sent to Operations for packaging.',
+              evidence:['Shipping label PDF','Tracking number confirmed'],
+              next:'Operations packages device and attaches tracking to Jira. IT validates ITSM record.'
+            }
+          },
+          { id:'pr2', lbl:'Confirm carrier pickup window', sys:'FedEx Portal', due:'Today, 4:00 PM',
+            done:false, guide:{
+              steps:['In FedEx portal, schedule a pickup for the package','Confirm pickup window matches warehouse hours','Get pickup confirmation number','Notify Operations with pickup window','Log in Jira ticket'],
+              where:['FedEx Portal'],
+              notify:[{name:'Operations Team',role:'Warehouse',color:'#F59E0B'}],
+              message:'Carrier pickup scheduled. Window: [TIME]. Confirmation: [NUM]. Operations please have package ready.',
+              evidence:['Pickup confirmation number','Jira comment added'],
+              next:'Carrier picks up package. Tracking goes live. Operations notifies employee.'
+            }
+          }
+        ]
+      },
+      Finance: {
+        3:[
+          { id:'fi1', lbl:'Update asset register to In Transit status', sys:'Finance System', due:'Today, EOD',
+            done:false, guide:{
+              steps:['Open Finance System → Asset Register','Search for device by serial number or asset ID','Update status field to "In Transit"','Enter shipment date and carrier details','Attach Procurement shipping confirmation','Save and run audit log export'],
+              where:['Finance System','ERP','Asset Register'],
+              notify:[{name:'IT Team',role:'Asset Management',color:'#6C3FE8'},{name:'Procurement',role:'Logistics',color:'#3B82F6'}],
+              message:'Asset register updated. Device status: In Transit. Carrier: FedEx. Shipment date: [DATE].',
+              evidence:['Asset register screenshot','Audit log export attached'],
+              next:'Asset register reflects In Transit status for audit purposes. Finance has no further action until delivery is confirmed.'
+            }
+          }
+        ]
+      },
+      HR: {
+        3:[
+          { id:'hr1', lbl:'Confirm employee availability to receive package', sys:'Email / Slack', due:'Today, 5:00 PM',
+            done:false, guide:{
+              steps:['Message the employee via Slack','Confirm they will be home or at office on expected delivery date','If unavailable: coordinate with Operations for reschedule','Update onboarding checklist with expected delivery date','Log confirmation in HRIS notes'],
+              where:['Slack','Email','HRIS'],
+              notify:[{name:'Operations Team',role:'Logistics',color:'#F59E0B'}],
+              message:'[Employee] confirmed available for device delivery on [DATE]. Address verified. Operations can proceed.',
+              evidence:['Slack/email confirmation screenshot','HRIS note updated'],
+              next:'Operations sends tracking details to employee. HR updates onboarding checklist.'
+            }
+          },
+          { id:'hr2', lbl:'Update onboarding checklist', sys:'Notion', due:'Today, EOD',
+            done:false, guide:{
+              steps:['Open Notion → Employee Onboarding Template','Find the onboarding checklist for Sarah Kim','Check off "Device Shipped" item','Add note with tracking number and ETA','Notify Hiring Manager that device is en route','Save and share updated checklist'],
+              where:['Notion','Slack'],
+              notify:[{name:'Hiring Manager',role:'Department Head',color:'#F59E0B'}],
+              message:'Onboarding checklist updated. Device shipped. Tracking attached. Manager notified.',
+              evidence:['Notion checklist screenshot','Manager notification sent'],
+              next:'Device arrives. HR confirms delivery. Process advances to Confirm Delivery state.'
+            }
+          }
+        ]
+      }
+    }
+  },
+  equipment: {
+    name:'Equipment Return', icon:'📦', iconBg:'#DBEAFE', domain:'Operations', currentStateIdx:1,
+    states:[
+      { name:'Return Initiated', short:'Initiated', status:'done' },
+      { name:'Device Inspection', short:'Inspect', status:'active',
+        desc:'Inspect and verify the returned device condition.',
+        deptTasks:{ Operations:[{id:'op-e1',lbl:'Receive device from mailroom',sys:'ITSM',status:'p'},{id:'op-e2',lbl:'Log return in asset system',sys:'ITSM',status:'p'}], IT:[{id:'it-e1',lbl:'Verify device condition',sys:'ITSM',status:'p'},{id:'it-e2',lbl:'Run diagnostic checks',sys:'MDM',status:'p'}], Procurement:[], Finance:[], HR:[] },
+        deptInfo:{ Operations:{systems:['ITSM'],notify:['IT Team'],after:'IT runs full diagnostic. Device routed to repair or stock.',policies:['Asset Return Policy']}, IT:{systems:['ITSM','MDM','Jamf'],notify:['Operations','Finance'],after:'Device either goes to repair queue or back into stock.',policies:['Device Diagnostic SOP']}, Procurement:{systems:[],notify:[],after:'N/A',policies:[]}, Finance:{systems:[],notify:[],after:'N/A',policies:[]}, HR:{systems:[],notify:[],after:'N/A',policies:[]} }
+      },
+      { name:'Wiped & Stored', short:'Wiped', status:'next' },
+      { name:'Re-assigned', short:'Re-assigned', status:'next' },
+      { name:'Closed', short:'Closed', status:'next' }
+    ],
+    roleTasks:{
+      IT:{ 1:[{id:'it-e1',lbl:'Verify device condition',sys:'ITSM',due:'Tomorrow, 10:00 AM',done:false,guide:{steps:['Retrieve device from mailroom','Inspect physical condition','Power on and run diagnostics','Log condition in ITSM'],where:['ITSM','Jamf'],notify:[{name:'IT Manager',role:'Asset Mgmt',color:'#6C3FE8'}],message:'Device condition verified. Status: [CONDITION]. Logged in ITSM.',evidence:['Device photos','ITSM condition log'],next:'Device routed to wipe queue or repair.'}},{id:'it-e2',lbl:'Wipe and re-image device',sys:'Jamf / MDM',due:'Tomorrow, 2:00 PM',done:false,guide:{steps:['Unenroll device from MDM','Run secure erase','Reinstall macOS / Windows','Re-enroll in MDM','Verify clean state'],where:['Jamf Pro','MDM','ITSM'],notify:[{name:'Operations',role:'Warehouse',color:'#F59E0B'}],message:'Device wiped and re-imaged. Ready for re-assignment.',evidence:['Clean boot screenshot','Erase certificate'],next:'Device enters available stock pool.'}}] },
+      Operations:{ 1:[{id:'op-e1',lbl:'Receive device from mailroom',sys:'ITSM',due:'Tomorrow, 10:00 AM',done:false,guide:{steps:['Go to mailroom','Sign for returned package','Log receipt in ITSM','Pass to IT for inspection'],where:['ITSM'],notify:[{name:'IT Team',role:'Asset Mgmt',color:'#6C3FE8'}],message:'Device received from [Employee]. Passed to IT for inspection.',evidence:['Receipt log in ITSM'],next:'IT inspects device and logs condition.'}}] }
+    }
+  },
+  facilities: {
+    name:'Facilities Request', icon:'🏢', iconBg:'#DCFCE7', domain:'Operations', currentStateIdx:2,
+    states:[
+      { name:'Request Submitted', short:'Submitted', status:'done' },
+      { name:'Budget Approved', short:'Budget OK', status:'done' },
+      { name:'Review & Approve', short:'Review', status:'active', desc:'Review the facilities request and make approval decision.', deptTasks:{Operations:[{id:'op-f1',lbl:'Review request scope',sys:'ServiceNow',status:'p'}],IT:[],Procurement:[{id:'pr-f1',lbl:'Check vendor availability',sys:'Vendor Portal',status:'p'}],Finance:[{id:'fi-f1',lbl:'Confirm budget allocation',sys:'Finance System',status:'c'}],HR:[]}, deptInfo:{Operations:{systems:['ServiceNow','Facilities Portal'],notify:['Finance','Procurement'],after:'Procurement schedules vendor. Finance confirms budget release.',policies:['Facilities Request Policy']},IT:{systems:[],notify:[],after:'N/A',policies:[]},Procurement:{systems:['Vendor Portal'],notify:['Operations'],after:'Vendor scheduled. Setup date confirmed.',policies:['Procurement SOP']},Finance:{systems:['Finance System'],notify:['Operations'],after:'Budget confirmed. Setup can proceed.',policies:['Budget Policy']},HR:{systems:[],notify:[],after:'N/A',policies:[]}} },
+      { name:'Setup Scheduled', short:'Scheduled', status:'next' }
+    ],
+    roleTasks:{ Operations:{ 2:[{id:'op-f1',lbl:'Review and approve request',sys:'ServiceNow',due:'May 19, 2:00 PM',done:false,guide:{steps:['Open Facilities Portal','Find Request FAC-2024-091','Review scope and budget','Approve or reject with notes'],where:['ServiceNow','Facilities Portal'],notify:[{name:'Office Manager',role:'NY Office',color:'#22C55E'}],message:'Request FAC-2024-091 reviewed. [APPROVED]. Next: vendor scheduling.',evidence:['Approval form','Decision email'],next:'Facilities team begins setup scheduling.'}}] } }
+  },
+  onboarding: {
+    name:'Employee Onboarding', icon:'👤', iconBg:'#FEE2E2', domain:'HR', currentStateIdx:0,
+    states:[
+      { name:'Pre-boarding', short:'Pre-board', status:'active', desc:'Complete IT setup before employee start date.', deptTasks:{Operations:[],IT:[{id:'it-o1',lbl:'Create Microsoft 365 account',sys:'Azure AD',status:'p'},{id:'it-o2',lbl:'Complete IT requirements',sys:'ITSM',status:'p'}],Procurement:[{id:'pr-o1',lbl:'Order device from approved vendor',sys:'Vendor Portal',status:'p'}],Finance:[{id:'fi-o1',lbl:'Create employee cost center',sys:'Finance System',status:'p'}],HR:[{id:'hr-o1',lbl:'Send welcome email',sys:'Email',status:'p'},{id:'hr-o2',lbl:'Create HRIS record',sys:'HRIS',status:'p'}]}, deptInfo:{Operations:{systems:[],notify:[],after:'N/A',policies:[]},IT:{systems:['Azure AD','ITSM','Jira','MDM'],notify:['HR','Hiring Manager'],after:'Employee has all system access on Day 1.',policies:['IT Onboarding Policy']},Procurement:{systems:['Vendor Portal'],notify:['IT'],after:'Device delivered. IT configures it.',policies:['Device Procurement Policy']},Finance:{systems:['Finance System','ERP'],notify:['HR'],after:'Employee payroll and cost center ready.',policies:['Finance Onboarding SOP']},HR:{systems:['HRIS','Email','Notion'],notify:['Hiring Manager'],after:'Employee receives welcome package. Onboarding begins.',policies:['HR Onboarding Handbook']}} },
+      { name:'Day 1 Setup', short:'Day 1', status:'next' },
+      { name:'Week 1 Check-in', short:'Wk 1', status:'next' },
+      { name:'30-Day Review', short:'30-Day', status:'next' },
+      { name:'60-Day Review', short:'60-Day', status:'next' },
+      { name:'90-Day Review', short:'90-Day', status:'next' },
+      { name:'Onboarded', short:'Done', status:'next' }
+    ],
+    roleTasks:{ IT:{ 0:[{id:'it-o1',lbl:'Create Microsoft 365 account',sys:'Azure AD',due:'May 21, 9:00 AM',done:false,guide:{steps:['Open Microsoft 365 Admin Center','Click Add User','Enter employee details and assign M365 Business Premium','Set temp password','Send welcome email with credentials'],where:['Azure AD','M365 Admin'],notify:[{name:'HR Team',role:'People Ops',color:'#EF4444'}],message:'Microsoft 365 account created for [NAME]. License: M365 Business Premium. Credentials sent.',evidence:['Account creation screenshot','Welcome email copy'],next:'IT provisions additional systems access based on role.'}},{id:'it-o2',lbl:'Complete IT requirements checklist',sys:'ITSM / Jira',due:'May 21, 9:00 AM',done:false,guide:{steps:['Open Jira onboarding ticket','Check off each IT requirement','Assign device from available stock','Set up VPN access','Update ITSM record'],where:['Jira','ITSM'],notify:[{name:'IT Manager',role:'IT Ops',color:'#6C3FE8'}],message:'IT requirements completed for [NAME]. Device assigned, VPN configured, access provisioned.',evidence:['IT checklist PDF','ITSM record screenshot'],next:'HR completes people setup. Employee is ready for Day 1.'}}] } }
+  },
+  offboarding: {
+    name:'Employee Offboarding', icon:'🚪', iconBg:'#FEE2E2', domain:'HR', currentStateIdx:0,
+    states:[
+      { name:'Exit Initiated', short:'Initiated', status:'active', desc:'Immediately revoke access — this is OVERDUE.', deptTasks:{Operations:[{id:'op-ob1',lbl:'Retrieve company devices',sys:'ITSM',status:'p'}],IT:[{id:'it-ob1',lbl:'Revoke system access',sys:'Okta / Azure AD',status:'b'},{id:'it-ob2',lbl:'Deactivate accounts',sys:'Azure AD',status:'b'}],Procurement:[],Finance:[{id:'fi-ob1',lbl:'Process final payroll',sys:'Payroll System',status:'p'}],HR:[{id:'hr-ob1',lbl:'Conduct exit interview',sys:'Zoom',status:'p'},{id:'hr-ob2',lbl:'Process HRIS offboarding',sys:'HRIS',status:'p'}]}, deptInfo:{Operations:{systems:['ITSM','Asset Tracker'],notify:['IT'],after:'Devices retrieved. IT wipes them. Equipment Return process initiated.',policies:['Asset Return Policy']},IT:{systems:['Okta','Azure AD','ITSM'],notify:['HR','Security'],after:'All access revoked. Accounts disabled. Security team notified.',policies:['Access Revocation Policy — CRITICAL']},Procurement:{systems:[],notify:[],after:'N/A',policies:[]},Finance:{systems:['Payroll System','Finance System'],notify:['HR'],after:'Final payroll processed. Benefits terminated.',policies:['Final Payroll Policy']},HR:{systems:['HRIS','Email','Zoom'],notify:['Hiring Manager','Finance'],after:'HRIS record archived. Exit interview complete. Manager notified.',policies:['Offboarding Handbook']}} },
+      { name:'Access Revoked', short:'Revoked', status:'next' },
+      { name:'Device Retrieved', short:'Retrieved', status:'next' },
+      { name:'Data Backup', short:'Backup', status:'next' },
+      { name:'Final Settlement', short:'Settlement', status:'next' },
+      { name:'Closed', short:'Closed', status:'next' }
+    ],
+    roleTasks:{ IT:{ 0:[{id:'it-ob1',lbl:'Revoke system access — URGENT',sys:'Okta / Azure AD',due:'OVERDUE',done:false,guide:{steps:['Open Okta Admin — deactivate Sarah M. immediately','In Azure AD: disable account, revoke all sessions','Remove from all Google Workspace groups','Revoke VPN and remote access','Disable badge access in building security','Document all actions in ITSM offboarding ticket'],where:['Okta','Azure AD','ITSM'],notify:[{name:'HR Team',role:'People Ops',color:'#EF4444'},{name:'IT Security',role:'Compliance',color:'#6C3FE8'}],message:'All system access revoked for Sarah M. Effective immediately. ITSM ticket updated.',evidence:['Okta deactivation screenshot','Azure AD screenshot','Access revocation log'],next:'Device retrieval initiated by Operations. HR completes final paperwork.'}},{id:'it-ob2',lbl:'Deactivate all accounts',sys:'Azure AD / Okta',due:'OVERDUE',done:false,guide:{steps:['Confirm Okta account is deactivated','Disable Microsoft 365 account','Revoke any shared mailbox access','Archive email to manager','Update ITSM with all actions'],where:['Azure AD','Okta','M365'],notify:[{name:'IT Security',role:'Compliance',color:'#6C3FE8'}],message:'All accounts deactivated for Sarah M. Email archived. ITSM updated.',evidence:['Account deactivation logs','Email archive confirmation'],next:'Operations retrieves company devices. IT monitors for any remaining access attempts.'}}] } }
+  }
+};
+
+// MY WORK process list per role
+const MY_WORK_PROCESSES = {
+  IT:[
+    { key:'laptop', stateName:'Ship to Employee', step:'4 of 7', tasks:3, nextTask:'Validate asset assignment in ITSM', due:'Today, 6:00 PM', dueClass:'td', hl:true, flowDots:[{t:'d'},{t:'d'},{t:'d'},{t:'a'},{t:'n'},{t:'n'},{t:'n'}] },
+    { key:'equipment', stateName:'Device Inspection', step:'2 of 5', tasks:2, nextTask:'Verify device condition', due:'Tomorrow, 10:00 AM', dueClass:'', hl:false, flowDots:[{t:'d'},{t:'a'},{t:'n'},{t:'n'},{t:'n'}] },
+    { key:'onboarding', stateName:'IT Requirements', step:'1 of 7', tasks:2, nextTask:'Create Microsoft 365 account', due:'May 21, 9:00 AM', dueClass:'', hl:false, flowDots:[{t:'a'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'}] },
+    { key:'offboarding', stateName:'Access Revocation', step:'1 of 6', tasks:2, nextTask:'Revoke system access — URGENT', due:'OVERDUE', dueClass:'ov', hl:false, flowDots:[{t:'e'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'}] }
+  ],
+  Operations:[
+    { key:'laptop', stateName:'Ship to Employee', step:'4 of 7', tasks:3, nextTask:'Confirm employee shipping address', due:'Today, 4:00 PM', dueClass:'td', hl:true, flowDots:[{t:'d'},{t:'d'},{t:'d'},{t:'a'},{t:'n'},{t:'n'},{t:'n'}] },
+    { key:'facilities', stateName:'Review & Approve', step:'3 of 4', tasks:1, nextTask:'Review and approve request', due:'May 19, 2:00 PM', dueClass:'', hl:false, flowDots:[{t:'d'},{t:'d'},{t:'a'},{t:'n'}] },
+    { key:'equipment', stateName:'Device Inspection', step:'2 of 5', tasks:1, nextTask:'Receive device from mailroom', due:'Tomorrow, 10:00 AM', dueClass:'', hl:false, flowDots:[{t:'d'},{t:'a'},{t:'n'},{t:'n'},{t:'n'}] }
+  ],
+  Procurement:[
+    { key:'laptop', stateName:'Ship to Employee', step:'4 of 7', tasks:2, nextTask:'Generate shipping label in carrier portal', due:'Today, 3:00 PM', dueClass:'td', hl:true, flowDots:[{t:'d'},{t:'d'},{t:'d'},{t:'a'},{t:'n'},{t:'n'},{t:'n'}] },
+    { key:'onboarding', stateName:'Device Order', step:'1 of 7', tasks:1, nextTask:'Order device from approved vendor', due:'May 21, EOD', dueClass:'', hl:false, flowDots:[{t:'a'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'}] }
+  ],
+  Finance:[
+    { key:'laptop', stateName:'Ship to Employee', step:'4 of 7', tasks:1, nextTask:'Update asset register to In Transit', due:'Today, EOD', dueClass:'td', hl:true, flowDots:[{t:'d'},{t:'d'},{t:'d'},{t:'a'},{t:'n'},{t:'n'},{t:'n'}] }
+  ],
+  HR:[
+    { key:'laptop', stateName:'Ship to Employee', step:'4 of 7', tasks:2, nextTask:'Confirm employee availability', due:'Today, 5:00 PM', dueClass:'td', hl:true, flowDots:[{t:'d'},{t:'d'},{t:'d'},{t:'a'},{t:'n'},{t:'n'},{t:'n'}] },
+    { key:'offboarding', stateName:'Exit Processing', step:'1 of 6', tasks:2, nextTask:'Conduct exit interview', due:'OVERDUE', dueClass:'ov', hl:false, flowDots:[{t:'e'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'}] },
+    { key:'onboarding', stateName:'Pre-boarding', step:'1 of 7', tasks:2, nextTask:'Send welcome email', due:'May 21, 9:00 AM', dueClass:'', hl:false, flowDots:[{t:'a'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'},{t:'n'}] }
+  ]
+};
+
+/* ══════════════════════════════════════
+   APP STATE
+══════════════════════════════════════ */
+let currentRole = 'IT';
+let currentView = 'mywork';
+let currentProcKey = null;
+let currentTaskId = null;
+let currentNavProcKey = 'laptop';
+let currentDept = null;
+
+/* ══════════════════════════════════════
+   VIEW NAVIGATION
+══════════════════════════════════════ */
+function navTo(view, fromSbItem) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  currentView = view;
+  if(view==='mywork'){
+    document.getElementById('v-mywork').classList.add('active');
+    document.getElementById('bc-view').textContent='My Work';
+    document.getElementById('mode-pill').className='mode-pill personal';
+    document.getElementById('mode-pill').textContent='My Work View';
+    renderMyWork();
+  } else if(view==='detail'){
+    document.getElementById('v-detail').classList.add('active');
+    document.getElementById('mode-pill').className='mode-pill personal';
+    document.getElementById('mode-pill').textContent='My Work View';
+  } else if(view==='nav'){
+    document.getElementById('v-nav').classList.add('active');
+    document.getElementById('bc-view').textContent='Browse All';
+    document.getElementById('mode-pill').className='mode-pill global';
+    document.getElementById('mode-pill').textContent='Company Process View';
+    renderNav(currentNavProcKey || 'laptop');
+  }
+  if(fromSbItem) setActive(fromSbItem);
 }
 
-function openCEO(){
-  switchView('ceo')
-  fetch('/data/views/ceo-view.json')
-    .then(r=>r.json())
-    .then(d=>{
-      document.getElementById('ceo-data').innerHTML = `
-        <div class="card">Revenue: ${d.revenue}</div>
-        <div class="card">Active Clients: ${d.active_clients}</div>
-        <div class="card">Alerts: ${d.alerts.join(", ")}</div>
-      `
-    })
+function openProcess(procKey) {
+  currentProcKey = procKey;
+  currentTaskId = null;
+  const proc = PROCESSES[procKey];
+  const stateIdx = proc.currentStateIdx;
+  const state = proc.states[stateIdx];
+  renderDetailFlow(procKey);
+  document.getElementById('cl-state-name').textContent = state.name;
+  document.getElementById('cl-desc').textContent = state.desc || 'Complete your assigned tasks for this stage.';
+  renderTaskList(procKey);
+  closeAG();
+  document.getElementById('done-banner').classList.add('hidden');
+  updateBreadcrumb(['DFX5','My Work', proc.name, state.name]);
+  navTo('detail');
 }
 
-function openArea(){
-  switchView('area')
-  fetch('/data/views/area-hr-view.json')
-    .then(r=>r.json())
-    .then(d=>{
-      document.getElementById('area-data').innerHTML = `
-        <div class="card">Active Onboardings: ${d.active_onboardings}</div>
-        <div class="card">Blocked Cases: ${d.blocked_cases}</div>
-      `
-    })
+function openGlobalProcess(procKey, domain, sbEl) {
+  currentNavProcKey = procKey;
+  currentDept = null;
+  navTo('nav');
+  renderNav(procKey);
+  if(sbEl){
+    document.querySelectorAll('.sb-child').forEach(c=>c.classList.remove('act'));
+    sbEl.classList.add('act');
+  }
+  updateBreadcrumb(['DFX5','Browse All', domain ? capitalize(domain) : '', PROCESSES[procKey].name]);
 }
 
-function openUser(){
-  switchView('user')
-  fetch('/data/views/user-view.json')
-    .then(r=>r.json())
-    .then(d=>{
-      document.getElementById('user-data').innerHTML = d.tasks.map(t=>`
-        <div class="card">${t.title} — ${t.status}</div>
-      `).join('')
-    })
+function openDetailFromSearch(procKey, role){
+  currentProcKey = procKey;
+  openProcess(procKey);
 }
 
-openCEO()
+function updateBreadcrumb(parts){
+  const bc = document.getElementById('topbar-bc');
+  bc.innerHTML = parts.filter(Boolean).map((p,i,arr)=>{
+    if(i===arr.length-1) return `<span class="cur">${p}</span>`;
+    return `<span onclick="navTo('mywork')">${p}</span><span class="sep">›</span>`;
+  }).join('');
+}
 
+/* ══════════════════════════════════════
+   RENDER MY WORK
+══════════════════════════════════════ */
+function renderMyWork(){
+  const list = MY_WORK_PROCESSES[currentRole] || [];
+  document.getElementById('mw-role-label').textContent = currentRole + ' Operations';
+  const el = document.getElementById('my-proc-list');
+  if(!list.length){ el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--tm);font-size:14px">No active processes for ${currentRole} role.</div>`; return; }
+  const proc_icons = {laptop:'💻',equipment:'📦',facilities:'🏢',onboarding:'👤',offboarding:'🚪'};
+  const proc_ibg = {laptop:'#EDE9FE',equipment:'#DBEAFE',facilities:'#DCFCE7',onboarding:'#FEE2E2',offboarding:'#FFE4E6'};
+  const proc_names = {laptop:'Laptop Lifecycle',equipment:'Equipment Return',facilities:'Facilities Request',onboarding:'Employee Onboarding',offboarding:'Employee Offboarding'};
+  el.innerHTML = list.map(p=>{
+    const dots = p.flowDots.map((d,i,arr)=>{
+      const cl = d.t==='d'?'d':d.t==='a'?'a':d.t==='e'?'e':d.t==='w'?'w':'';
+      const ic = d.t==='d'?'✓':d.t==='a'?'●':d.t==='e'?'!':'○';
+      const line = i<arr.length-1 ? `<div class="fl ${d.t==='d'?'d':d.t==='a'?'a':''}"></div>` : '';
+      return `<div class="fd ${cl}">${ic}</div>${line}`;
+    }).join('');
+    return `<div class="prow${p.hl?' hl':''}" onclick="openProcess('${p.key}')">
+      <div class="p-ico" style="background:${proc_ibg[p.key]||'#F3F4F6'}">${proc_icons[p.key]||'📋'}</div>
+      <div class="p-info">
+        <div class="p-name">${proc_names[p.key]}</div>
+        <div class="p-sub ${p.hl?'v':'m'}">${p.stateName}</div>
+      </div>
+      <div class="flow-wrap">
+        <div class="flow-mini">${dots}</div>
+        <div class="fstep">Step ${p.step}</div>
+      </div>
+      <div class="p-tc"><div class="cn" style="color:${p.dueClass==='ov'?'var(--r)':p.hl?'var(--v)':'var(--ts)'}">${p.tasks}</div><div class="cl">My Tasks</div></div>
+      <div class="p-next">
+        <div class="pnl">Next Task</div>
+        <div class="pnt">${p.nextTask}</div>
+        <div class="pnd ${p.dueClass}">${p.due}</div>
+      </div>
+      <div class="p-arr">›</div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════
+   RENDER DETAIL FLOW
+══════════════════════════════════════ */
+function renderDetailFlow(procKey){
+  const proc = PROCESSES[procKey];
+  const el = document.getElementById('detail-flow');
+  let html = `<div class="flow-big-lbl">Process Flow — ${proc.name}</div><div class="flow-big-track">`;
+  proc.states.forEach((s,i)=>{
+    const cl = s.status==='done'?'d':s.status==='active'?'a':'';
+    const ic = s.status==='done'?'✓':s.status==='active'?'●':(i+1);
+    const ncl = s.status==='done'?'d':s.status==='active'?'a':'';
+    html += `<div class="fs"><div class="fsd ${cl}" onclick="clickFlowState(${i},'${procKey}')">${ic}</div><div class="fsn ${ncl}">${s.name}</div></div>`;
+    if(i<proc.states.length-1){
+      const lc = s.status==='done'?'d':s.status==='active'?'a':'';
+      html += `<div class="fc ${lc}"></div>`;
+    }
+  });
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function clickFlowState(idx, procKey){
+  const proc = PROCESSES[procKey];
+  const s = proc.states[idx];
+  if(s.status==='done') showToast(`${s.name} — completed ✓`,'✅');
+  else if(s.status==='active') showToast(`${s.name} — current stage`,'📍');
+  else showToast(`${s.name} — not yet reached`,'⏳');
+}
+
+/* ══════════════════════════════════════
+   RENDER TASK LIST
+══════════════════════════════════════ */
+function renderTaskList(procKey){
+  const proc = PROCESSES[procKey];
+  const stateIdx = proc.currentStateIdx;
+  const tasks = (proc.roleTasks[currentRole]||{})[stateIdx] || [];
+  const el = document.getElementById('task-list');
+
+  if(!tasks.length){
+    el.innerHTML=`<div class="waiting-box">
+      <strong>No action required from your role in this state.</strong><br>
+      <span style="font-size:12px;margin-top:6px;display:block">Waiting on: Operations · Procurement · HR to complete their tasks before this process advances.</span>
+    </div>`;
+    document.getElementById('prog-fill').style.width='100%';
+    document.getElementById('prog-txt').textContent='N/A';
+    return;
+  }
+
+  const done = tasks.filter(t=>t.done).length;
+  const total = tasks.length;
+  document.getElementById('prog-fill').style.width=(done/total*100)+'%';
+  document.getElementById('prog-txt').textContent=`${done} / ${total}`;
+
+  el.innerHTML = tasks.map(t=>{
+    const isSel = t.id===currentTaskId;
+    const isOv = t.due&&(t.due.includes('OVERDUE')||t.due.includes('Overdue'));
+    return `<div class="ti${t.done?' done':''}${isSel?' sel':''}" onclick="selectTask('${procKey}','${t.id}')">
+      <div class="chk${t.done?' done':''}" onclick="event.stopPropagation();toggleTask('${procKey}','${t.id}')">${t.done?'✓':''}</div>
+      <div class="ti-info">
+        <div class="ti-lbl">${t.lbl}</div>
+        <div class="ti-meta">
+          <span class="sys-tag">${t.sys}</span>
+          ${t.due?`<span class="due-tag${isOv?' ov':''}">${t.due}</span>`:''}
+        </div>
+      </div>
+      <div class="ti-arr">›</div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════
+   SELECT TASK → ACTION GUIDE
+══════════════════════════════════════ */
+function selectTask(procKey, taskId){
+  currentTaskId = taskId;
+  renderTaskList(procKey);
+  const proc = PROCESSES[procKey];
+  const stateIdx = proc.currentStateIdx;
+  const tasks = (proc.roleTasks[currentRole]||{})[stateIdx]||[];
+  const task = tasks.find(t=>t.id===taskId);
+  if(!task) return;
+  const g = task.guide;
+  document.getElementById('ag-empty').classList.add('hidden');
+  const ac = document.getElementById('ag-content');
+  ac.classList.remove('hidden'); ac.style.display='flex';
+  document.getElementById('ag-title').textContent = task.lbl;
+  document.getElementById('ag-steps').innerHTML = g.steps.map((s,i)=>
+    `<div class="step"><div class="sn">${i+1}</div><div class="st2">${s}</div></div>`).join('');
+  document.getElementById('ag-systems').innerHTML = g.where.map(w=>
+    `<div class="sc">🔗 ${w}</div>`).join('');
+  document.getElementById('ag-notify').innerHTML = g.notify.map(n=>
+    `<div class="nt-row"><div class="nt-av" style="background:${n.color}">${n.name.charAt(0)}</div>
+    <div><div class="nt-name">${n.name}</div><div class="nt-role">${n.role}</div></div>
+    <button class="nt-btn" onclick="event.stopPropagation();this.textContent='Sent ✓';this.style.color='var(--g)'">Notify</button></div>`).join('');
+  document.getElementById('ag-message').textContent = g.message;
+  document.getElementById('ag-evidence').innerHTML = g.evidence.map(e=>
+    `<div class="ev"><span class="ev-ico">📎</span>${e}</div>`).join('');
+  document.getElementById('ag-next').textContent = g.next;
+  const btn = document.getElementById('ag-complete-btn');
+  if(task.done){ btn.textContent='✓  Task Completed'; btn.disabled=true; }
+  else { btn.innerHTML='✓ &nbsp;Mark Task Complete'; btn.disabled=false; }
+}
+
+function closeAG(){
+  document.getElementById('ag-empty').classList.remove('hidden');
+  const ac = document.getElementById('ag-content');
+  ac.classList.add('hidden'); ac.style.display='none';
+  currentTaskId=null;
+  if(currentProcKey) renderTaskList(currentProcKey);
+}
+
+/* ══════════════════════════════════════
+   TASK COMPLETION
+══════════════════════════════════════ */
+function toggleTask(procKey, taskId){
+  const proc = PROCESSES[procKey];
+  const stateIdx = proc.currentStateIdx;
+  const tasks = (proc.roleTasks[currentRole]||{})[stateIdx]||[];
+  const task = tasks.find(t=>t.id===taskId);
+  if(!task||task.done) return;
+  task.done=true;
+  renderTaskList(procKey);
+  if(currentTaskId===taskId) selectTask(procKey, taskId);
+  checkAllDone(procKey);
+  showToast(`"${task.lbl.substring(0,35)}..." completed`,'✅');
+}
+
+function completeCurrentTask(){
+  if(!currentProcKey||!currentTaskId) return;
+  const proc = PROCESSES[currentProcKey];
+  const stateIdx = proc.currentStateIdx;
+  const tasks = (proc.roleTasks[currentRole]||{})[stateIdx]||[];
+  const task = tasks.find(t=>t.id===currentTaskId);
+  if(!task||task.done) return;
+  task.done=true;
+  // auto-advance to next incomplete task
+  const idx = tasks.indexOf(task);
+  const next = tasks.find((t,i)=>i>idx&&!t.done);
+  renderTaskList(currentProcKey);
+  if(next){ setTimeout(()=>selectTask(currentProcKey, next.id), 200); }
+  else { setTimeout(()=>{ closeAG(); checkAllDone(currentProcKey); }, 200); }
+  showToast(`"${task.lbl.substring(0,35)}..." completed`,'✅');
+}
+
+function checkAllDone(procKey){
+  const proc = PROCESSES[procKey];
+  const stateIdx = proc.currentStateIdx;
+  const tasks = (proc.roleTasks[currentRole]||{})[stateIdx]||[];
+  if(!tasks.length) return;
+  const allDone = tasks.every(t=>t.done);
+  const banner = document.getElementById('done-banner');
+  if(allDone){
+    const curState = proc.states[stateIdx];
+    const nextState = proc.states[stateIdx+1];
+    document.getElementById('done-title').textContent = `"${curState.name}" — Your Tasks Complete! 🎉`;
+    document.getElementById('done-sub').textContent = nextState
+      ? `Advancing to "${nextState.name}"...`
+      : 'Process complete!';
+    banner.classList.remove('hidden');
+    banner.scrollIntoView({behavior:'smooth',block:'nearest'});
+    if(nextState) showToast(`${curState.name} complete → ${nextState.name}`,'🎉');
+  } else { banner.classList.add('hidden'); }
+}
+
+function advanceState(){
+  const proc = PROCESSES[currentProcKey];
+  if(proc.currentStateIdx < proc.states.length-1){
+    proc.states[proc.currentStateIdx].status='done';
+    proc.currentStateIdx++;
+    proc.states[proc.currentStateIdx].status='active';
+    currentTaskId=null;
+    renderDetailFlow(currentProcKey);
+    const s = proc.states[proc.currentStateIdx];
+    document.getElementById('cl-state-name').textContent=s.name;
+    document.getElementById('cl-desc').textContent=s.desc||'Complete your assigned tasks.';
+    renderTaskList(currentProcKey);
+    document.getElementById('done-banner').classList.add('hidden');
+    closeAG();
+    showToast(`Now at: ${s.name}`,'📍');
+  }
+}
+
+/* ══════════════════════════════════════
+   RENDER GLOBAL NAV
+══════════════════════════════════════ */
+function renderNav(procKey){
+  currentNavProcKey = procKey;
+  const proc = PROCESSES[procKey];
+  document.getElementById('nav-proc-ico').textContent = proc.icon;
+  document.getElementById('nav-proc-ico').style.background = proc.iconBg||'#EDE9FE';
+  document.getElementById('nav-proc-name').textContent = proc.name;
+  document.getElementById('nav-proc-sub').textContent = (proc.domain||'Operations') + ' · Full company process view';
+  document.getElementById('nav-flow-lbl').textContent = 'Process Flow — ' + proc.name;
+
+  // Flow
+  const ft = document.getElementById('nav-flow-track');
+  ft.innerHTML = '';
+  proc.states.forEach((s,i)=>{
+    const cl = s.status==='done'?'d':s.status==='active'?'a':'';
+    const ic = s.status==='done'?'✓':s.status==='active'?'●':(i+1);
+    const fs = document.createElement('div'); fs.className='fs';
+    const dot = document.createElement('div'); dot.className=`fsd ${cl}`;
+    dot.textContent=ic; dot.onclick=()=>clickNavState(s,i);
+    const name = document.createElement('div'); name.className=`fsn ${cl}`; name.textContent=s.name;
+    fs.appendChild(dot); fs.appendChild(name); ft.appendChild(fs);
+    if(i<proc.states.length-1){
+      const fc=document.createElement('div'); fc.className=`fc ${cl}`; ft.appendChild(fc);
+    }
+  });
+
+  // Active state dept tasks
+  const activeState = proc.states[proc.currentStateIdx];
+  document.getElementById('dept-state-badge').textContent = activeState.name;
+  renderDeptGrid(procKey, proc.currentStateIdx);
+  closeDeptPanel();
+}
+
+function clickNavState(s, idx){
+  if(s.status==='active') showToast(`Current state: ${s.name}`,'📍');
+  else if(s.status==='done') showToast(`${s.name} — completed ✓`,'✅');
+  else showToast(`${s.name} — upcoming state`,'⏳');
+}
+
+function renderDeptGrid(procKey, stateIdx){
+  const proc = PROCESSES[procKey];
+  const state = proc.states[stateIdx];
+  const deptTasks = state.deptTasks || {};
+  const depts = ['Operations','Procurement','IT','Finance','HR'];
+  const el = document.getElementById('dept-grid');
+  el.innerHTML = depts.map(dept=>{
+    const tasks = deptTasks[dept]||[];
+    const m = DEPT_META[dept];
+    const taskHtml = tasks.map((t,i)=>`
+      <div class="dt${currentDept===dept?' sel':''}" onclick="event.stopPropagation();selectDeptTask('${procKey}','${dept}','${t.id}')">
+        <div class="dt-top">
+          <div class="dt-num">${i+1}</div>
+          <div style="flex:1"><div class="dt-lbl">${t.lbl}</div></div>
+          <div class="status-dot ${t.status}"></div>
+        </div>
+        <div class="dt-sys">${t.sys}</div>
+      </div>`).join('');
+    const empty = !tasks.length ? `<div style="padding:12px 14px;font-size:11.5px;color:var(--tm);font-style:italic">No tasks in this state</div>` : '';
+    return `<div class="dept-col${currentDept===dept?' sel':''}" onclick="selectDept('${procKey}','${dept}')">
+      <div class="dept-col-head">
+        <div class="dept-col-ico" style="background:${m.bg}">${m.ico}</div>
+        <div class="dept-col-name">${dept}</div>
+        <div class="dept-col-count">${tasks.length}</div>
+      </div>
+      <div class="dept-tasks">${taskHtml||empty}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectDept(procKey, dept){
+  currentDept = dept;
+  const proc = PROCESSES[procKey];
+  const stateIdx = proc.currentStateIdx;
+  const state = proc.states[stateIdx];
+  const info = (state.deptInfo||{})[dept]||{systems:[],notify:[],after:'',policies:[]};
+  const tasks = (state.deptTasks||{})[dept]||[];
+  const m = DEPT_META[dept];
+
+  renderDeptGrid(procKey, stateIdx);
+  document.getElementById('dp-empty').classList.add('hidden');
+  const dp = document.getElementById('dp-content');
+  dp.classList.remove('hidden'); dp.style.display='flex';
+  document.getElementById('dp-head-ico').textContent=m.ico;
+  document.getElementById('dp-head-ico').style.background=m.bg;
+  document.getElementById('dp-head-name').textContent=dept;
+  document.getElementById('dp-head-sub').textContent=state.name;
+
+  document.getElementById('dp-tasks').innerHTML = tasks.length
+    ? tasks.map((t,i)=>`<div class="dp-task"><div class="dp-task-lbl">${i+1}. ${t.lbl}</div><div class="dp-task-sys">${t.sys}</div></div>`).join('')
+    : '<div style="font-size:12px;color:var(--tm);padding:4px 0">No tasks for this department in this state</div>';
+
+  document.getElementById('dp-systems').innerHTML = (info.systems||[]).map(s=>
+    `<div class="dp-sys">${s}</div>`).join('') || '<span style="font-size:12px;color:var(--tm)">—</span>';
+
+  document.getElementById('dp-notify').innerHTML = (info.notify||[]).map(n=>
+    `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><div style="width:26px;height:26px;border-radius:50%;background:${m.bg};display:flex;align-items:center;justify-content:center;font-size:13px">${DEPT_META[n]?DEPT_META[n].ico:'👤'}</div><div style="font-size:12.5px;font-weight:600">${n}</div></div>`).join('')
+    || '<div style="font-size:12px;color:var(--tm);padding:4px 0">—</div>';
+
+  document.getElementById('dp-after').textContent = info.after||'—';
+
+  document.getElementById('dp-policies').innerHTML = (info.policies||[]).map(p=>
+    `<div class="policy-item">${p}</div>`).join('') || '<div style="font-size:12px;color:var(--tm)">—</div>';
+}
+
+function selectDeptTask(procKey, dept, taskId){
+  selectDept(procKey, dept);
+  setTimeout(()=>{
+    const tasks = document.querySelectorAll('.dp-task');
+    tasks.forEach(t=>{t.classList.remove('sel')});
+  },50);
+}
+
+function closeDeptPanel(){
+  currentDept=null;
+  document.getElementById('dp-empty').classList.remove('hidden');
+  const dp=document.getElementById('dp-content');
+  dp.classList.add('hidden'); dp.style.display='none';
+  const procKey = currentNavProcKey;
+  if(procKey) renderDeptGrid(procKey, PROCESSES[procKey].currentStateIdx);
+}
+
+/* ══════════════════════════════════════
+   ADD TO MY WORK
+══════════════════════════════════════ */
+function addToMyWork(){
+  const proc = PROCESSES[currentNavProcKey];
+  showToast(`${proc.name} added to My Work`,'✅');
+  setTimeout(()=>{ navTo('mywork'); renderMyWork(); },800);
+}
+
+/* ══════════════════════════════════════
+   ROLE SELECTOR
+══════════════════════════════════════ */
+function setRole(role, ico){
+  currentRole = role;
+  document.getElementById('role-name').textContent = role;
+  document.getElementById('role-ico').textContent = ico;
+  document.querySelectorAll('.role-opt').forEach(o=>o.classList.remove('sel'));
+  document.querySelectorAll('.role-opt').forEach(o=>{
+    if(o.textContent.includes(role)) o.classList.add('sel');
+  });
+  document.getElementById('role-dd').classList.remove('open');
+  document.getElementById('sb-ur').textContent = role+' Team';
+  document.getElementById('mw-role-label').textContent = role+' Operations';
+  if(currentView==='mywork') renderMyWork();
+  else if(currentView==='detail' && currentProcKey){ renderTaskList(currentProcKey); closeAG(); }
+  showToast(`Role changed to ${role}`,'👤');
+}
+
+function toggleRoleDD(){
+  document.getElementById('role-dd').classList.toggle('open');
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+function toggleDomain(id, el){
+  const children = document.getElementById('dom-'+id);
+  const isOpen = children.classList.contains('open');
+  children.classList.toggle('open');
+  el.classList.toggle('open');
+}
+
+function setActive(el){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
+  if(el) el.classList.add('act');
+}
+
+/* ══════════════════════════════════════
+   SEARCH
+══════════════════════════════════════ */
+function openSearch(){ document.getElementById('search-dd').classList.add('open'); }
+function closeSearch(){ document.getElementById('search-dd').classList.remove('open'); document.getElementById('search-input').value=''; }
+function onSearch(v){
+  if(v.length>0) document.getElementById('search-dd').classList.add('open');
+}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+function showToast(msg, ico='ℹ️'){
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`${ico} ${msg}`;
+  wrap.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+
+/* ══════════════════════════════════════
+   TABS
+══════════════════════════════════════ */
+function setTab(el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  el.classList.add('act');
+}
+
+/* ══════════════════════════════════════
+   UTILITY
+══════════════════════════════════════ */
+function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+
+// Close dropdowns on outside click
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.role-sel')) document.getElementById('role-dd').classList.remove('open');
+});
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+renderMyWork();
 </script>
-
 </body>
 </html>
-
-<!-- TIER 2 CONFIRMATION -->
-<script>
-console.log("TIER 2 LOADED");
-</script>
-
