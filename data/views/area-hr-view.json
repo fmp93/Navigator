@@ -2,34 +2,6 @@
   "area": "HR",
   "metrics": {
     "active_onboardings": 12,
-    "completed_this_week": 5,
-    "sla_compliance": "88%",
     "blocked_cases": 3
-  },
-  "processes": [
-    {
-      "name": "Employee Onboarding",
-      "status": "At Risk",
-      "active_cases": 7
-    },
-    {
-      "name": "Offboarding",
-      "status": "Healthy",
-      "active_cases": 3
-    }
-  ],
-  "workload": [
-    {
-      "user": "Valentina",
-      "tasks": 8
-    },
-    {
-      "user": "Team HR",
-      "tasks": 14
-    }
-  ],
-  "blockers": [
-    "Missing employee documents",
-    "Manager approval delays"
-  ]
+  }
 }

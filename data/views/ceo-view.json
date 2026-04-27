@@ -1,34 +1,11 @@
 {
   "company_health": {
     "revenue_today": 42300,
-    "booked_vs_billed": "78%",
-    "cash_collected": 31200,
     "sla_compliance": "91%",
     "blocked_tasks": 27
   },
-  "revenue_spine": {
-    "leads": 120,
-    "qualified": 45,
-    "closed_won": 12,
-    "delivery": 10,
-    "invoiced": 8,
-    "paid": 6
-  },
-  "live_operations": {
-    "running": 124,
-    "waiting": 38,
-    "blocked": 12
-  },
   "alerts": [
-    "Onboarding delayed for ACME Corp",
-    "Invoice overdue > 30 days",
-    "Contract signature pending client"
-  ],
-  "at_risk_clients": [
-    {
-      "name": "ACME Corp",
-      "issue": "KYC pending",
-      "status": "Blocked"
-    }
+    "Onboarding delayed",
+    "Invoice overdue"
   ]
 }
