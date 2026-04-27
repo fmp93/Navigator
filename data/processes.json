@@ -1,0 +1,9 @@
+[
+  {
+    "id": "process-001",
+    "name": "Laptop Funding / Reimbursement",
+    "domain": "Operations / Finance",
+    "purpose": "Control laptop purchases, approvals, receipts and reimbursements.",
+    "states": ["Requested", "Approved", "Purchased", "Receipt Uploaded", "Reimbursed", "Closed"]
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "approval-001",
+    "title": "Approve laptop funding request",
+    "approver": "Manager",
+    "status": "pending",
+    "amount_limit": 1500,
+    "related_object": "Laptop Request"
+  }
+]

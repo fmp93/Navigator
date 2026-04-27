@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Navigator OS Tier 1</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f6f7f9; color: #111; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    nav a { margin-right: 16px; cursor: pointer; font-weight: bold; }
+    pre { background: #111; color: #0f0; padding: 16px; border-radius: 8px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <h1>Navigator OS — Tier 1</h1>
+  <p>Operational navigator for company processes, tasks, approvals and running cases.</p>
+
+  <nav>
+    <a onclick="loadData('tasks')">My Tasks</a>
+    <a onclick="loadData('approvals')">Approvals</a>
+    <a onclick="loadData('running-cases')">Running Cases</a>
+    <a onclick="loadData('processes')">Processes</a>
+  </nav>
+
+  <div class="card">
+    <h2 id="section-title">Home</h2>
+    <pre id="output">Click a section above to load data.</pre>
+  </div>
+
+  <script>
+    async function loadData(name) {
+      document.getElementById('section-title').innerText = name;
+      try {
+        const response = await fetch(`/data/${name}.json`);
+        const data = await response.json();
+        document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('output').innerText = 'Error loading ' + name + '.json';
+      }
+    }
+  </script>
+</body>
+</html>

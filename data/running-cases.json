@@ -1,0 +1,10 @@
+[
+  {
+    "id": "case-001",
+    "object": "Laptop Request",
+    "employee": "Example Employee",
+    "current_state": "Requested",
+    "next_action": "Manager approval required",
+    "status": "running"
+  }
+]

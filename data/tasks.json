@@ -1,0 +1,18 @@
+[
+  {
+    "id": "task-001",
+    "title": "Upload laptop receipt",
+    "owner": "Employee",
+    "status": "pending",
+    "related_object": "Laptop Request",
+    "due_date": "2026-04-30"
+  },
+  {
+    "id": "task-002",
+    "title": "Validate reimbursement request",
+    "owner": "Finance",
+    "status": "pending",
+    "related_object": "Laptop Request",
+    "due_date": "2026-05-02"
+  }
+]
